@@ -1,0 +1,6 @@
+.classpath
+.project
+bin/
+EsArabicIndexer.log
+.settings/
+modules/

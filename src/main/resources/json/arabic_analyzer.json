@@ -1,0 +1,14 @@
+{ 
+	"analysis": {
+		"arabic_stemmer": {
+			"type": "stemmer",
+			"language": "arabic"
+		}
+		
+		"analyzer" : {
+			"arabic" : {
+				"tokenizer" : "standard"
+			}
+		}
+	}
+}
