@@ -43,7 +43,8 @@ public class TireKickerService {
 
 			initialCheckouts(client);
 
-			arabicLanguageAnalyzer(client);
+			// IndicesService.defineIndexWithStandardAnalyzer(client,
+			// ConfigUtils.getProperty("es.index.name.for.tire.kick"));
 
 			// log.info(TIRE_KICK + "waiting 1 second for indexing to complete");
 			// Thread.sleep(1000l);
@@ -60,28 +61,6 @@ public class TireKickerService {
 		try {
 			ClusterService.clusterClientCheckout(client);
 			IndicesService.indicesClientCheckout(client);
-		} catch (Exception e) {
-			throw e;
-		}
-	}
-
-	private void arabicLanguageAnalyzer(ElasticsearchClient client) throws Exception {
-		try {
-			prepareAnalyzerIndexer(client, ConfigUtils.getProperty("es.index.name.for.tire.kick"));
-		} catch (Exception e) {
-			throw e;
-		}
-	}
-
-	private void prepareAnalyzerIndexer(ElasticsearchClient client, String indexName) throws Exception {
-		try {
-			IndicesService.defineIndexWithStandardAnalyzer(client, indexName);
-//			MappingService.putMappings(client, indexName);
-//			MappingService.getMappings(client, indexName);
-
-			if (doTireKick) {
-				IndexerService.indexTestDocument(client, indexName);
-			}
 		} catch (Exception e) {
 			throw e;
 		}

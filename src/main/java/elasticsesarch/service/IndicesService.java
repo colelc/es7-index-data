@@ -1,20 +1,28 @@
 package elasticsesarch.service;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.analysis.Analyzer;
+import co.elastic.clients.elasticsearch._types.analysis.CustomAnalyzer;
+import co.elastic.clients.elasticsearch._types.analysis.NGramTokenizer;
 import co.elastic.clients.elasticsearch._types.analysis.StandardAnalyzer;
 import co.elastic.clients.elasticsearch._types.analysis.StandardTokenizer;
+import co.elastic.clients.elasticsearch._types.analysis.TokenChar;
 import co.elastic.clients.elasticsearch._types.analysis.Tokenizer;
 import co.elastic.clients.elasticsearch._types.analysis.TokenizerDefinition;
 import co.elastic.clients.elasticsearch._types.mapping.BooleanProperty;
 import co.elastic.clients.elasticsearch._types.mapping.DateProperty;
 import co.elastic.clients.elasticsearch._types.mapping.DynamicMapping;
+import co.elastic.clients.elasticsearch._types.mapping.FieldNamesField;
+import co.elastic.clients.elasticsearch._types.mapping.IntegerNumberProperty;
+import co.elastic.clients.elasticsearch._types.mapping.KeywordProperty;
 import co.elastic.clients.elasticsearch._types.mapping.Property;
 import co.elastic.clients.elasticsearch._types.mapping.TextProperty;
 import co.elastic.clients.elasticsearch._types.mapping.TypeMapping;
@@ -25,86 +33,127 @@ import co.elastic.clients.elasticsearch.indices.DeleteIndexResponse;
 import co.elastic.clients.elasticsearch.indices.ElasticsearchIndicesClient;
 import co.elastic.clients.elasticsearch.indices.ExistsRequest;
 import co.elastic.clients.elasticsearch.indices.GetAliasResponse;
+import co.elastic.clients.elasticsearch.indices.GetMappingRequest;
+import co.elastic.clients.elasticsearch.indices.GetMappingResponse;
 import co.elastic.clients.elasticsearch.indices.IndexSettings;
 import co.elastic.clients.elasticsearch.indices.IndexSettingsAnalysis;
 import co.elastic.clients.elasticsearch.indices.get_alias.IndexAliases;
+import co.elastic.clients.elasticsearch.indices.get_mapping.IndexMappingRecord;
 import co.elastic.clients.transport.endpoints.BooleanResponse;
 
 public class IndicesService {
 	private static Logger log = Logger.getLogger(IndicesService.class);
-	private static final String TIRE_KICK = "Tire Kick: ";
 
-//	public static void refreshMultilingualIndex(ElasticsearchClient client, String indexName) throws Exception {
-//		// NOTE: IMPORTANT IMPORTANT IMPORTANT IMPORTANT
-//
-//		// The mapping for this multilingual index requires the ICU Analyzer plugin.
-//		// To install this plugin:
-//		// From the Elasticsearch bin directory:
-//		// Enter the command:
-//		// ./elasticsearch-plugin install analysis-icu
-//		// And then of course: recycle the ES instance.
-//
-//		// 1st we send a CreateIndexRequest
-//		// 2nd we send a PutMappingRequest
-//		try {
-//			deleteIndex(client, indexName);
-//
-//			Builder settings = Settings.builder()/**/
-//					.put("index.number_of_shards", 1)/**/
-//					.put("index.number_of_replicas", 0);/**/
-//
-//			CreateIndexRequest createIndexRequest = new CreateIndexRequest(indexName).settings(settings);
-//			CreateIndexResponse createIndexResponse = client.indices().create(createIndexRequest, RequestOptions.DEFAULT);
-//			log.info("The index \"" + createIndexResponse.index() + "\" " + "has been created");
-//
-//			PutMappingRequest putMappingRequest = new PutMappingRequest(indexName).source(MappingService.getMulticulturalMapping());
-//			AcknowledgedResponse putMappingResponse = client.indices().putMapping(putMappingRequest, RequestOptions.DEFAULT);
-//
-//			if (putMappingResponse.isAcknowledged()) {
-//				log.info("The mapping for index \"" + indexName + "\" " + "has been created");
-//				// getMappings(client, indexName);
-//			}
-//
-//		} catch (Exception e) {
-//			client.shutdown();
-//			throw e;
-//		}
-//	}
+	public static void defineGamecastIndex(ElasticsearchClient client, String indexName) throws Exception {
+		try {
+			IndicesService.deleteIndex(client, indexName);
+
+			List<TokenChar> tokenChars = Arrays.asList(TokenChar.Digit, TokenChar.Letter);
+
+			NGramTokenizer ngram = new NGramTokenizer.Builder()/**/
+					.minGram(3)/**/
+					.maxGram(3)/**/
+					.tokenChars(tokenChars)/**/
+					.customTokenChars("%")/**/
+					.build();
+
+			TokenizerDefinition ngramTokenizerDefinition = new TokenizerDefinition.Builder().ngram(ngram).build();
+			Tokenizer ngramTokenizer = new Tokenizer.Builder().definition(ngramTokenizerDefinition).build();
+			Map<String, Tokenizer> ngramTokenizerMap = new HashMap<String, Tokenizer>();
+			ngramTokenizerMap.put("my_tokenizer", ngramTokenizer);
+
+			CustomAnalyzer customAnalyzer = new CustomAnalyzer.Builder().tokenizer("my_tokenizer").build();
+			Analyzer myAnalyzer = new Analyzer.Builder().custom(customAnalyzer).build();
+
+			Map<String, Analyzer> analyzerMap = new HashMap<>();
+			analyzerMap.put("my_analyzer", myAnalyzer);
+
+			IndexSettingsAnalysis indexSettingsAnalysis = new IndexSettingsAnalysis.Builder()/**/
+					.analyzer(analyzerMap)/**/
+					.tokenizer(ngramTokenizerMap)/**/
+					.build();
+
+			IndexSettings indexSettings = new IndexSettings.Builder()/**/
+					.maxInnerResultWindow(250)/**/
+					.numberOfReplicas("1")/**/
+					.numberOfShards("3")/**/
+					.analysis(indexSettingsAnalysis)/**/
+					.build();
+
+			Map<String, Property> propertyMap = new HashMap<>();
+
+			// gamecast object
+			TextProperty gamecastTextProperty = new TextProperty.Builder()/**/
+					.index(Boolean.TRUE)/**/
+					.fields("networkCoverage", new Property.Builder().text(new TextProperty.Builder().build()).build())/**/
+					.fields("roadTeamConferenceShortName", new Property.Builder().text(new TextProperty.Builder().build()).build())/**/
+					.fields("roadTeamConferenceLongName", new Property.Builder().text(new TextProperty.Builder().build()).build())/**/
+					.fields("roadTeamName", new Property.Builder().text(new TextProperty.Builder().build()).build())/**/
+					.fields("homeTeamConferenceShortName", new Property.Builder().text(new TextProperty.Builder().build()).build())/**/
+					.fields("homeTeamConferenceLongName", new Property.Builder().text(new TextProperty.Builder().build()).build())/**/
+					.fields("homeTeamName", new Property.Builder().text(new TextProperty.Builder().build()).build())/**/
+					.fields("venueName", new Property.Builder().text(new TextProperty.Builder().build()).build())/**/
+					.fields("venueCity", new Property.Builder().text(new TextProperty.Builder().build()).build())/**/
+					.fields("venueState", new Property.Builder().text(new TextProperty.Builder().build()).build())/**/
+					.fields("status", new Property.Builder().text(new TextProperty.Builder().build()).build())/**/
+					.fields("referees", new Property.Builder().text(new TextProperty.Builder().build()).build())/**/
+					.fields("sourceFile", new Property.Builder().text(new TextProperty.Builder().build()).build())/**/
+					/**/
+					// .fields("gameId", new Property.Builder().long_(new
+					// LongNumberProperty.Builder().build()).build())/**/
+					// .fields("gameId", gameIdProperty)/**/
+					/**/
+					.fields("gamePercentageFull", new Property.Builder().text(new TextProperty.Builder().build()).build())/**/
+					.fields("gameAttendance", new Property.Builder().integer(new IntegerNumberProperty.Builder().build()).build())/**/
+					.fields("venueCapacity", new Property.Builder().integer(new IntegerNumberProperty.Builder().build()).build())/**/
+					/**/
+					.fields("gameTimeUTC", new Property.Builder().date(new DateProperty.Builder().format("hour_minute").build()).build())/**/
+					.fields("gameDay", new Property.Builder().date(new DateProperty.Builder().format("basic_date").build()).build())/**/
+					.build();
+			propertyMap.put("gamecast", new Property.Builder().text(gamecastTextProperty).build());
+
+			// 'individual fields'
+			propertyMap.put("gameId", new Property.Builder().keyword(new KeywordProperty.Builder().build()).build());
+
+			propertyMap.put("roadTeamConferenceId", new Property.Builder().keyword(new KeywordProperty.Builder().build()).build());
+			propertyMap.put("roadTeamId", new Property.Builder().keyword(new KeywordProperty.Builder().build()).build());
+			propertyMap.put("homeTeamConferenceId", new Property.Builder().keyword(new KeywordProperty.Builder().build()).build());
+			propertyMap.put("homeTeamId", new Property.Builder().keyword(new KeywordProperty.Builder().build()).build());
+			propertyMap.put("roadTeamConferenceId", new Property.Builder().keyword(new KeywordProperty.Builder().build()).build());
+			propertyMap.put("recordId", new Property.Builder().keyword(new KeywordProperty.Builder().build()).build());
+
+			TypeMapping mapping = new TypeMapping.Builder()/**/
+					// .dynamic(DynamicMapping.Strict)/**/
+					// .dynamic(DynamicMapping.True)/**/
+					.properties(propertyMap)/**/
+					.build();
+
+			CreateIndexRequest createIndexRequest = new CreateIndexRequest.Builder()/**/
+					.settings(indexSettings)/**/
+					.mappings(mapping)/**/
+					.index(indexName)/**/
+					// .withJson(is)/**/
+					.build();
+
+			CreateIndexResponse response = client.indices().create(createIndexRequest);
+			log.info("The index \"" + response.index() + "\" " + "has been created");
+
+			// getIndexMapping(client, indexName);
+
+		} catch (Exception e) {
+			throw e;
+		}
+	}
 
 	public static void defineIndexWithStandardAnalyzer(ElasticsearchClient client, String indexName) throws Exception {
 		try {
 			IndicesService.deleteIndex(client, indexName);
-
-			// XContentBuilder builder = AnalyzerService.getArabicAnalyzer();
-			// InputStream is =
-			// IndicesService.class.getClassLoader().getResourceAsStream("/json/arabic_analyzer.json");
-			// InputStream is = IndicesService.class.getResourceAsStream("/json/test.json");
-
-			// LanguageAnalyzer.Builder test = new LanguageAnalyzer.Builder();
-			// Object x = test.language(new
-			// LanguageAnalyzer.Builder().language(Language.Arabic).build());
-			// Analyzer._kind().Language;
-
-//			LanguageAnalyzer arabic = new LanguageAnalyzer.Builder()/**/
-//					.language(Language.Arabic)/**/
-//					.stemExclusion(new ArrayList<String>())/**/
-//					.build();
-//
-//			Analyzer analyzer = new Analyzer.Builder()/**/
-//					.language(arabic)/**/
-//					.build();
 
 			Analyzer standardAnalyzer = new Analyzer.Builder()/**/
 					.standard(new StandardAnalyzer.Builder().build())/**/
 					.build();
 			Map<String, Analyzer> analyzerMap = new HashMap<>();
 			analyzerMap.put("analyzer", standardAnalyzer);
-
-			// analyzerMap.put("arabic_stemmer", new
-			// Analyzer.Builder().language(arabic).build());
-			// analyzerMap.put("tokenizer", new Analyzer.Builder().standard(new
-			// StandardAnalyzer.Builder().build()).build());
-			// analyzerMap.put("what", analyzer);
 
 			TokenizerDefinition td = new TokenizerDefinition.Builder().standard(new StandardTokenizer.Builder().build()).build();
 			Tokenizer t = new Tokenizer.Builder().definition(td).build();
@@ -154,7 +203,27 @@ public class IndicesService {
 					.build();
 
 			CreateIndexResponse response = client.indices().create(createIndexRequest);
-			log.info(TIRE_KICK + "The index \"" + response.index() + "\" " + "has been created");
+			log.info("The index \"" + response.index() + "\" " + "has been created");
+
+			getIndexMapping(client, indexName);
+
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+
+	public static void getIndexMapping(ElasticsearchClient client, String indexName) throws Exception {
+		try {
+			GetMappingRequest mappingsRequest = new GetMappingRequest.Builder()/**/
+					.index(indexName)/**/
+					.build();
+
+			GetMappingResponse mappingResponse = client.indices().getMapping(mappingsRequest);
+			Map<String, IndexMappingRecord> mapping = mappingResponse.result();
+			mapping.forEach((ix, indexMappingRecord) -> {
+				TypeMapping map = indexMappingRecord.mappings();
+				FieldNamesField fieldNames = map.fieldNames();
+			});
 
 		} catch (Exception e) {
 			throw e;

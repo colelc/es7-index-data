@@ -4,3 +4,4 @@ bin/
 EsArabicIndexer.log
 .settings/
 modules/
+documents/

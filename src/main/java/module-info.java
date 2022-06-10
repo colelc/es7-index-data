@@ -1,4 +1,6 @@
 module app {
+	exports vo;
+
 	requires log4j;
 	// requires elasticsearch.rest.high.level.client; //deprecated as of 7.15
 	requires elasticsearch.rest.client;
@@ -11,6 +13,7 @@ module app {
 	requires org.apache.httpcomponents.httpasyncclient;
 	requires commons.logging;
 	requires jakarta.json;
+	requires org.eclipse.parsson;
 	// requires javax.json.api;
 	// requires javax.json;
 
@@ -18,5 +21,6 @@ module app {
 	requires com.fasterxml.jackson.databind;
 	requires com.fasterxml.jackson.annotation;
 	requires lucene.analyzers.common;
-
+	requires commons.csv;
+	requires com.google.gson;
 }

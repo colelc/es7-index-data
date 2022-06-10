@@ -1,47 +1,52 @@
 package elasticsesarch.service;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
-import org.elasticsearch.xcontent.XContentBuilder;
-import org.elasticsearch.xcontent.XContentFactory;
+
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch.indices.AnalyzeRequest;
+import co.elastic.clients.elasticsearch.indices.AnalyzeResponse;
+import co.elastic.clients.elasticsearch.indices.analyze.AnalyzeToken;
 
 public class AnalyzerService {
 	private static Logger log = Logger.getLogger(AnalyzerService.class);
 
-//	public static XContentBuilder getArabicAnalyzer() throws Exception {
-//		try {
-//			InputStream is = AnalyzerService.class.getResourceAsStream("json/arabic_analyzer.json");
-//
-//		} catch (Exception e) {
-//			throw e;
-//		}
-//		return null;
-//	}
+	public static void analyzeGamecastField(ElasticsearchClient client, String indexName, String analyzer, String fieldName, Object text) throws Exception {
+		AnalyzeRequest request = null;
 
-	public static XContentBuilder getArabicAnalyzer() throws Exception {
 		try {
-			XContentBuilder builder = XContentFactory.jsonBuilder().prettyPrint().startObject();
+			if (analyzer != null) {
+				log.info("ANALYZING: " + indexName + " " + analyzer + " " + fieldName + "=" + String.valueOf(text));
 
-			builder.startObject("analysis");
-			builder.startObject("arabic_stemmer")/**/
-					.field("type", "stemmer")/**/
-					.field("language", "arabic")/**/
-					.endObject();
+				request = new AnalyzeRequest.Builder()/**/
+						.index(indexName)/**/
+						.field(fieldName)/**/
+						.text(String.valueOf(text))/**/
+						.explain(Boolean.FALSE)/**/
+						.analyzer(analyzer)/**/
+						.build();
+			} else {
+				log.info("ANALYZING: " + indexName + " " + fieldName + "=" + String.valueOf(text));
 
-			builder.startObject("analyzer");
-			builder.startObject("arabic");
-			builder.field("tokenizer", "standard");
-			builder.endObject();
+				request = new AnalyzeRequest.Builder()/**/
+						.index(indexName)/**/
+						.field(fieldName)/**/
+						.text(String.valueOf(text))/**/
+						.explain(Boolean.FALSE)/**/
+						// .analyzer(analyzer)/**/
+						.build();
+			}
+			AnalyzeResponse response = client.indices().analyze(request);
 
-			builder.endObject();
-			builder.endObject();
-			builder.endObject();
-
-			System.out.println(builder.toString());
-
-			return builder;
+			List<AnalyzeToken> tokens = response.tokens();
+			for (AnalyzeToken token : tokens) {
+				log.info(token.type() + " -> " + token.token());
+			}
 		} catch (Exception e) {
 			throw e;
 		}
+
 	}
 
 }

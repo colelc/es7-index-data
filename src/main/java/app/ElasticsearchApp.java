@@ -4,7 +4,10 @@ import org.apache.log4j.Logger;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import elasticsesarch.service.ClientService;
-import elasticsesarch.service.TireKickerService;
+import elasticsesarch.service.IndexerService;
+import elasticsesarch.service.IndicesService;
+import service.RawDataIngestService;
+import util.ConfigUtils;
 
 public class ElasticsearchApp {
 
@@ -19,13 +22,20 @@ public class ElasticsearchApp {
 		try {
 			client = ClientService.getESClient();
 
-			new TireKickerService().go(client);
+			// new TireKickerService().go(client);
+			RawDataIngestService.go();
+			IndicesService.defineGamecastIndex(client, ConfigUtils.getProperty("es.index.name.gamecast"));
 
+//			AnalyzerService.analyzeGamecastField(client, ConfigUtils.getProperty("es.index.name.gamecast"), "my_analyzer", "venueName", "Frank Erwin Center");
+//			AnalyzerService.analyzeGamecastField(client, ConfigUtils.getProperty("es.index.name.gamecast"), null, "gameId", 401368093);
+//			AnalyzerService.analyzeGamecastField(client, ConfigUtils.getProperty("es.index.name.gamecast"), null, "gameTimeUTC", "01:00");
+//			AnalyzerService.analyzeGamecastField(client, ConfigUtils.getProperty("es.index.name.gamecast"), null, "gameDay", 20220216);
 			// PipelineService.refreshPipelineProcessors(client);
 			// PipelineService.simulatePipelineRequest(client, "multilingual");
 
 			// IndicesService.refreshMultilingualIndex(client, "multilingual");
 			// IndexerService.indexMulticulturalDocumentTest(client, "multicultural");
+			IndexerService.indexGamecastData(client, ConfigUtils.getProperty("es.index.name.gamecast"));
 
 			// log.info("ENGLISH");
 			// QueryService.testMultilingualMultiMatch(client, "home");
@@ -36,6 +46,7 @@ public class ElasticsearchApp {
 			// IndicesService.deleteIndex(client, "proto");
 
 			client.shutdown();
+
 			log.info("DONE");
 		} catch (Exception e) {
 			client.shutdown();

@@ -1,10 +1,10 @@
 package util;
 
+import java.io.File;
 import java.io.InputStream;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
-import org.apache.lucene.analysis.util.ResourceLoader;
 
 public class ConfigUtils {
 	private static Logger log = Logger.getLogger(ConfigUtils.class);
@@ -61,6 +61,15 @@ public class ConfigUtils {
 		} catch (Exception e) {
 			throw e;
 		}
+	}
+
+	public static String getGamecastJsonOutputFile() throws Exception {
+		try {
+			return getProperty("directory.gamecast.document") + File.separator + getProperty("gamecast.json.file.name");
+		} catch (Exception e) {
+			throw e;
+		}
+
 	}
 
 }
