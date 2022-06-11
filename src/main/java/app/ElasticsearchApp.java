@@ -4,9 +4,7 @@ import org.apache.log4j.Logger;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import elasticsesarch.service.ClientService;
-import elasticsesarch.service.IndexerService;
-import elasticsesarch.service.IndicesService;
-import service.RawDataIngestService;
+import elasticsesarch.service.QueryService;
 import util.ConfigUtils;
 
 public class ElasticsearchApp {
@@ -23,8 +21,9 @@ public class ElasticsearchApp {
 			client = ClientService.getESClient();
 
 			// new TireKickerService().go(client);
-			RawDataIngestService.go();
-			IndicesService.defineGamecastIndex(client, ConfigUtils.getProperty("es.index.name.gamecast"));
+//			RawDataIngestService.go();
+			// IndicesService.defineGamecastIndex(client,
+			// ConfigUtils.getProperty("es.index.name.gamecast"));
 
 //			AnalyzerService.analyzeGamecastField(client, ConfigUtils.getProperty("es.index.name.gamecast"), "my_analyzer", "venueName", "Frank Erwin Center");
 //			AnalyzerService.analyzeGamecastField(client, ConfigUtils.getProperty("es.index.name.gamecast"), null, "gameId", 401368093);
@@ -35,8 +34,9 @@ public class ElasticsearchApp {
 
 			// IndicesService.refreshMultilingualIndex(client, "multilingual");
 			// IndexerService.indexMulticulturalDocumentTest(client, "multicultural");
-			IndexerService.indexGamecastData(client, ConfigUtils.getProperty("es.index.name.gamecast"));
+//			IndexerService.indexGamecastData(client, ConfigUtils.getProperty("es.index.name.gamecast"));
 
+			QueryService.matchAllQuery(client, ConfigUtils.getProperty("es.index.name.gamecast"));
 			// log.info("ENGLISH");
 			// QueryService.testMultilingualMultiMatch(client, "home");
 			// log.info("GERMAN");

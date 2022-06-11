@@ -80,37 +80,36 @@ public class IndicesService {
 					.analysis(indexSettingsAnalysis)/**/
 					.build();
 
+			// multi-mapping - (using a field as both a keyword and as text)
+			Property multiMappedProperty = getMultimappedProperty();
 			Map<String, Property> propertyMap = new HashMap<>();
 
-			// gamecast object
+			// gamecast object - everything is multi-mapped
 			TextProperty gamecastTextProperty = new TextProperty.Builder()/**/
 					.index(Boolean.TRUE)/**/
-					.fields("networkCoverage", new Property.Builder().text(new TextProperty.Builder().build()).build())/**/
-					.fields("roadTeamConferenceShortName", new Property.Builder().text(new TextProperty.Builder().build()).build())/**/
-					.fields("roadTeamConferenceLongName", new Property.Builder().text(new TextProperty.Builder().build()).build())/**/
-					.fields("roadTeamName", new Property.Builder().text(new TextProperty.Builder().build()).build())/**/
-					.fields("homeTeamConferenceShortName", new Property.Builder().text(new TextProperty.Builder().build()).build())/**/
-					.fields("homeTeamConferenceLongName", new Property.Builder().text(new TextProperty.Builder().build()).build())/**/
-					.fields("homeTeamName", new Property.Builder().text(new TextProperty.Builder().build()).build())/**/
-					.fields("venueName", new Property.Builder().text(new TextProperty.Builder().build()).build())/**/
-					.fields("venueCity", new Property.Builder().text(new TextProperty.Builder().build()).build())/**/
-					.fields("venueState", new Property.Builder().text(new TextProperty.Builder().build()).build())/**/
-					.fields("status", new Property.Builder().text(new TextProperty.Builder().build()).build())/**/
-					.fields("referees", new Property.Builder().text(new TextProperty.Builder().build()).build())/**/
-					.fields("sourceFile", new Property.Builder().text(new TextProperty.Builder().build()).build())/**/
+					.fields("networkCoverage", multiMappedProperty)/**/
+					.fields("networkCoverage", multiMappedProperty)/**/
+					.fields("roadTeamConferenceShortName", multiMappedProperty)/**/
+					.fields("roadTeamConferenceLongName", multiMappedProperty)/**/
+					.fields("roadTeamName", multiMappedProperty)/**/
+					.fields("homeTeamConferenceShortName", multiMappedProperty)/**/
+					.fields("homeTeamConferenceLongName", multiMappedProperty)/**/
+					.fields("homeTeamName", multiMappedProperty)/**/
+					.fields("venueName", multiMappedProperty)/**/
+					.fields("venueCity", multiMappedProperty)/**/
+					.fields("venueState", multiMappedProperty)/**/
+					.fields("status", multiMappedProperty)/**/
+					.fields("referees", multiMappedProperty)/**/
+					.fields("sourceFile", multiMappedProperty)/**/
 					/**/
-					// .fields("gameId", new Property.Builder().long_(new
-					// LongNumberProperty.Builder().build()).build())/**/
-					// .fields("gameId", gameIdProperty)/**/
-					/**/
-					.fields("gamePercentageFull", new Property.Builder().text(new TextProperty.Builder().build()).build())/**/
+					.fields("gamePercentageFull", multiMappedProperty)/**/
 					.fields("gameAttendance", new Property.Builder().integer(new IntegerNumberProperty.Builder().build()).build())/**/
 					.fields("venueCapacity", new Property.Builder().integer(new IntegerNumberProperty.Builder().build()).build())/**/
 					/**/
 					.fields("gameTimeUTC", new Property.Builder().date(new DateProperty.Builder().format("hour_minute").build()).build())/**/
 					.fields("gameDay", new Property.Builder().date(new DateProperty.Builder().format("basic_date").build()).build())/**/
 					.build();
-			propertyMap.put("gamecast", new Property.Builder().text(gamecastTextProperty).build());
+			propertyMap.put("Gamecast", new Property.Builder().text(gamecastTextProperty).build());
 
 			// 'individual fields'
 			propertyMap.put("gameId", new Property.Builder().keyword(new KeywordProperty.Builder().build()).build());
@@ -138,11 +137,28 @@ public class IndicesService {
 			CreateIndexResponse response = client.indices().create(createIndexRequest);
 			log.info("The index \"" + response.index() + "\" " + "has been created");
 
-			// getIndexMapping(client, indexName);
+			getIndexMapping(client, indexName);
 
 		} catch (Exception e) {
 			throw e;
 		}
+	}
+
+	/**
+	 * I want all fields to be multi-mapped for search via text or keyword
+	 * 
+	 * @return
+	 */
+	private static Property getMultimappedProperty() {
+
+		KeywordProperty keywordProperty = new KeywordProperty.Builder().ignoreAbove(Integer.valueOf(256)).build();
+
+		TextProperty textProperty = new TextProperty.Builder()/**/
+				.fields("keyword", new Property.Builder().keyword(keywordProperty).build())/**/
+				.build();
+
+		Property property = new Property.Builder().text(textProperty).build();
+		return property;
 	}
 
 	public static void defineIndexWithStandardAnalyzer(ElasticsearchClient client, String indexName) throws Exception {
@@ -205,7 +221,7 @@ public class IndicesService {
 			CreateIndexResponse response = client.indices().create(createIndexRequest);
 			log.info("The index \"" + response.index() + "\" " + "has been created");
 
-			getIndexMapping(client, indexName);
+			// getIndexMapping(client, indexName);
 
 		} catch (Exception e) {
 			throw e;

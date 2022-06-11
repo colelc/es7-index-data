@@ -2,22 +2,18 @@ package elasticsesarch.service;
 
 import org.apache.log4j.Logger;
 
-import util.ConfigUtils;
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch._types.SortOptions;
+import co.elastic.clients.elasticsearch._types.SortOrder;
+import co.elastic.clients.elasticsearch._types.query_dsl.Query;
+import co.elastic.clients.elasticsearch._types.query_dsl.QueryBuilders;
+import co.elastic.clients.elasticsearch.core.SearchRequest;
+import co.elastic.clients.elasticsearch.core.SearchResponse;
+import co.elastic.clients.elasticsearch.core.search.Hit;
+import vo.Gamecast;
 
 public class QueryService {
 	private static Logger log = Logger.getLogger(QueryService.class);
-
-	private static String[] languages;
-
-	static {
-		try {
-			languages = ConfigUtils.getProperty("es.language.fields").split(",");
-		} catch (Exception e) {
-			log.error(e.getMessage());
-			e.printStackTrace();
-			System.exit(99);
-		}
-	}
 
 //	public static void testMatchPhraseQuery(RestHighLevelClient client, String searchTerm) throws Exception {
 //		try {
@@ -108,8 +104,15 @@ public class QueryService {
 //
 //	}
 //
-//	public static void testMatch(RestHighLevelClient client, String searchTerm) throws Exception {
+//	public static <SearchSourceBuilder> void matchQuery(ElasticsearchClient client, String searchTerm) throws Exception {
 //		try {
+//			SortOptions sortOptions = new SortOptions.Builder().field(new FieldSort.Builder().field("gameDay").build()).build();
+//			Query query = new Query.Builder().matchAll(QueryBuilders.matchAll().build()).build();
+//			SearchRequest searchRequest = new SearchRequest.Builder()/**/
+//					.query(query)/**/
+//					.sort(sortOptions)/**/
+//					.build();
+//			///////////////////////////////////////////////////////////////////////////////
 //			// without param passed in, this request will be run against all
 //			// indices
 //			SearchRequest request = new SearchRequest();
@@ -137,34 +140,31 @@ public class QueryService {
 //			throw e;
 //		}
 //	}
-//
-//	public static void testMatchAll(RestHighLevelClient client) throws Exception {
-//		try {
-//			// without param passed in, this request will be run against all
-//			// indices
-//			SearchRequest request = new SearchRequest();
-//			SearchSourceBuilder builder = new SearchSourceBuilder();
-//			builder.query(QueryBuilders.matchAllQuery());
-//			request.source(builder);
-//
-//			SearchResponse response = client.search(request, RequestOptions.DEFAULT);
-//			SearchHits hits = response.getHits();
-//			TotalHits totalHits = hits.getTotalHits();
-//			if (totalHits.value == 0) {
-//				log.info("0 documents returned from match_all query.  This may suggest a problem.");
-//				return;
-//			}
-//
-//			log.info(String.valueOf(totalHits.value) + " documents were returned from match_all query.");
-//			SearchHit[] sh = hits.getHits();
-//			for (SearchHit h : sh) {
-//				Map<String, Object> map = h.getSourceAsMap();
-//				map.forEach((k, v) -> log.info(k + " -> " + String.valueOf(v)));
-//			}
-//
-//		} catch (Exception e) {
-//			throw e;
-//		}
-//	}
+
+	public static void matchAllQuery(ElasticsearchClient client, String indexName) throws Exception {
+		try {
+			// interesting that if I omit the ".index(indexName)" the returned result set
+			// remains the same as when I include it
+
+			// for sort options:
+			SortOptions sortOptions = new SortOptions.Builder().field(f -> f.field("roadTeamName.keyword").order(SortOrder.Asc)).build();
+			Query query = new Query.Builder().matchAll(QueryBuilders.matchAll().build()).build();
+			SearchRequest searchRequest = new SearchRequest.Builder()/**/
+					.index(indexName)/**/
+					.query(query)/**/
+					.size(Integer.valueOf(9999))/**/
+					.sort(sortOptions)/**/
+					.build();
+
+			SearchResponse<Gamecast> searchResponse = client.search(searchRequest, Gamecast.class);
+			for (Hit<Gamecast> hit : searchResponse.hits().hits()) {
+				Gamecast gc = hit.source();
+				log.info(gc.getRoadTeamName() + " at " + gc.getHomeTeamName() + " on " + gc.getGameDay());
+			}
+
+		} catch (Exception e) {
+			throw e;
+		}
+	}
 
 }
