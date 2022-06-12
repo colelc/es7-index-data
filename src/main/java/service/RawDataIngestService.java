@@ -180,7 +180,7 @@ public class RawDataIngestService {
 							if (kv.contains("[")) {
 								String[] tokens = kv.replace("[", "").replace("]", "").split("=");
 								if (tokens.length == 2) {
-									map.put(tokens[0], tokens[1]);
+									map.put(tokens[0], tokens[1].replace("%", ""));
 									curr = tokens[0];
 								} else {
 									map.put(tokens[0], "");

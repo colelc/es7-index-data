@@ -2,58 +2,62 @@ package app;
 
 import org.apache.log4j.Logger;
 
-import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import elasticsesarch.service.ClientService;
-import elasticsesarch.service.IndexerService;
+import elasticsesarch.service.QueryService;
 import util.ConfigUtils;
 
 public class ElasticsearchApp {
 
 	private static Logger log = Logger.getLogger(ElasticsearchApp.class);
 
-	private static ElasticsearchClient client = null;
+	// private static ElasticsearchClient client = null;
 
 	public static void main(String[] args) {
 		log.info("This is an implementation of Elasticsearch 7.17.0 Indexing Capabilities");
 
 		// what a great day it is today
 		try {
-			client = ClientService.getESClient();
+			// client = ClientService.getESClient();
 
-			// new TireKickerService().go(client);
-//			RawDataIngestService.go();
-			// new IndicesService();
-			// IndicesService.defineGamecastIndexUsingAPI(client,
+			// new TireKickerService().go(ClientService.getESClient());
+			// RawDataIngestService.go();
+
+			// IndicesService.defineGamecastIndexUsingAPI(ClientService.getESClient(),
 			// ConfigUtils.getGamecastIndexName());
-//			IndicesService.defineGamecastIndexUsingWithJson(client, ConfigUtils.getGamecastIndexDefinitionFile(), ConfigUtils.getGamecastIndexName());
+			// IndicesService.defineGamecastIndexUsingWithJson(ClientService.getESClient(),
+			// ConfigUtils.getGamecastIndexDefinitionFile(),
+			// ConfigUtils.getGamecastIndexName());
 
-//			AnalyzerService.analyzeGamecastField(client, ConfigUtils.getGamecastIndexName(), "my_analyzer", "venueName", "Frank Erwin Center");
-//			AnalyzerService.analyzeGamecastField(client, ConfigUtils.getGamecastIndexName(), null, "gameId", 401368093);
-//			AnalyzerService.analyzeGamecastField(client, ConfigUtils.getGamecastIndexName(), null, "gameTimeUTC", "01:00");
-//			AnalyzerService.analyzeGamecastField(client, ConfigUtils.getGamecastIndexName(), null, "gameDay", 20220216);
+//			AnalyzerService.analyzeGamecastField(ClientService.getESClient(), ConfigUtils.getGamecastIndexName(), "my_analyzer", "venueName", "Frank Erwin Center");
+//			AnalyzerService.analyzeGamecastField(ClientService.getESClient(), ConfigUtils.getGamecastIndexName(), null, "gameId", 401368093);
+//			AnalyzerService.analyzeGamecastField(ClientService.getESClient(), ConfigUtils.getGamecastIndexName(), null, "gameTimeUTC", "01:00");
+//			AnalyzerService.analyzeGamecastField(ClientService.getESClient(), ConfigUtils.getGamecastIndexName(), null, "gameDay", 20220216);
 			// PipelineService.refreshPipelineProcessors(client);
-			// PipelineService.simulatePipelineRequest(client, "multilingual");
+			// PipelineService.simulatePipelineRequest(ClientService.getESClient(),
+			// "multilingual");
 
-//			IndexerService.indexGamecastDataWithObjectMapper(client, ConfigUtils.getGamecastIndexName());
-			IndexerService.indexGamecastDataWithJson(client, /**/
-					ConfigUtils.getProperty("directory.gamecast.document"), /**/
-					ConfigUtils.getGamecastIndexName());
+//			IndexerService.indexGamecastDataWithObjectMapper(ClientService.getESClient(), ConfigUtils.getGamecastIndexName());
+			// IndexerService.indexGamecastDataWithJson(ClientService.getESClient(), /**/
+			// ConfigUtils.getProperty("directory.gamecast.document"), /**/
+			// ConfigUtils.getGamecastIndexName());
 
-//			QueryService.matchAllQuery(client, ConfigUtils.getGamecastIndexName());
-//			QueryService.matchQuery(client, ConfigUtils.getGamecastIndexName(), "roadTeamName", "Duke");
+//			QueryService.matchAllQuery(ClientService.getESClient(), ConfigUtils.getGamecastIndexName());
+//			QueryService.matchQuery(ClientService.getESClient(), ConfigUtils.getGamecastIndexName(), "roadTeamName", "Duke");
+			QueryService.compoundQuery(ClientService.getESClient(), ConfigUtils.getGamecastIndexName(), "Duke");
 			// log.info("ENGLISH");
-			// QueryService.testMultilingualMultiMatch(client, "home");
+			// QueryService.testMultilingualMultiMatch(ClientService.getESClient(), "home");
 			// log.info("GERMAN");
-			// QueryService.testMultilingualMultiMatch(client, "Hause");
+			// QueryService.testMultilingualMultiMatch(ClientService.getESClient(),
+			// "Hause");
 
-			// IndicesService.deleteIndex(client, "multicultural");
-			// IndicesService.deleteIndex(client, "proto");
+			// IndicesService.deleteIndex(ClientService.getESClient(), "multicultural");
+			// IndicesService.deleteIndex(ClientService.getESClient(), "proto");
 
-			client.shutdown();
+			ClientService.shutdownClient();
 
 			log.info("DONE");
+			System.exit(0);
 		} catch (Exception e) {
-			client.shutdown();
 			log.error(e.getMessage());
 			e.printStackTrace();
 		}

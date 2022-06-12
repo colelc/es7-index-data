@@ -62,6 +62,16 @@ public class ClientService {
 		return client;
 	}
 
+	public static void shutdownClient() throws Exception {
+		try {
+			if (client != null) {
+				client.shutdown();
+			}
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+
 //	private static RestHighLevelClient client = null;
 //
 //	public static RestHighLevelClient getESClient() throws Exception {
