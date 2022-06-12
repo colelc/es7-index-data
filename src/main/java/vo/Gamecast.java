@@ -10,7 +10,7 @@ public class Gamecast {
 	private String homeTeamConferenceShortName;// Big 12,
 	private String roadTeamId;// 66,
 	private String venueName;// Frank Erwin Center,
-	private String gameAttendance;// 2585,
+	private Integer gameAttendance;// 2585,
 	private String homeTeamConferenceLongName;// Big 12,
 	private String roadTeamConferenceId;// 8,
 	private String venueState;// TX,
@@ -102,11 +102,11 @@ public class Gamecast {
 		this.venueName = venueName;
 	}
 
-	public String getGameAttendance() {
+	public Integer getGameAttendance() {
 		return gameAttendance;
 	}
 
-	public void setGameAttendance(String gameAttendance) {
+	public void setGameAttendance(Integer gameAttendance) {
 		this.gameAttendance = gameAttendance;
 	}
 

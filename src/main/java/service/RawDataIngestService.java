@@ -29,10 +29,11 @@ public class RawDataIngestService {
 	private static int numRecordsInFile = 0;
 	private static int totalRecords = 0;
 	private static int totalMisses = 0;
+	private static int ix = 0;
 
 	public static void go() throws Exception {
 
-		try (PrintWriter out = new PrintWriter(new FileWriter(ConfigUtils.getGamecastJsonOutputFile()))) {
+		try {
 			MappedData.setGamecastData(ingestRawData(ConfigUtils.getProperty("directory.raw.input"), ConfigUtils.getProperty("files.gamecast.input")));
 			MappedData.setConferenceData(ingestRawData(ConfigUtils.getProperty("directory.raw.input"), ConfigUtils.getProperty("files.conference.input")));
 			MappedData.setTeamData(ingestRawData(ConfigUtils.getProperty("directory.raw.input"), ConfigUtils.getProperty("files.team.input")));
@@ -41,15 +42,31 @@ public class RawDataIngestService {
 			log.info("Could not map: " + String.valueOf(totalMisses));
 			JsonData.setJsonArray(JsonUtils.listOfMapsToJsonArray(MappedData.getMappedGamecastData()));
 
-			JsonData.getJsonArray().forEach(jsonElement -> {
-				if (jsonElement.isJsonObject()) {
-					out.write(jsonElement.getAsJsonObject().toString() + "\n");
-				}
-			});
-
+			generateDocumentFiles();
 		} catch (Exception e) {
 			throw e;
 		}
+	}
+
+	private static void generateDocumentFiles() throws Exception {
+
+		String directory = ConfigUtils.getProperty("directory.gamecast.document");
+		String fileName = ConfigUtils.getProperty("gamecast.document.json.file.name");
+		ix = 0;
+
+		JsonData.getJsonArray().forEach(jsonElement -> {
+			try (PrintWriter out = new PrintWriter(new FileWriter(directory + File.separator + fileName + String.valueOf(ix++) + ".json"))) {
+				if (jsonElement.isJsonObject()) {
+					out.write(jsonElement.getAsJsonObject().toString());
+				}
+			} catch (Exception e) {
+				log.error(e.getMessage());
+				e.printStackTrace();
+				System.exit(99);
+			}
+
+		});
+
 	}
 
 	private static void mapKeys() throws Exception {

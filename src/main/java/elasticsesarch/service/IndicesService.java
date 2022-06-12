@@ -1,5 +1,6 @@
 package elasticsesarch.service;
 
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -40,11 +41,12 @@ import co.elastic.clients.elasticsearch.indices.IndexSettingsAnalysis;
 import co.elastic.clients.elasticsearch.indices.get_alias.IndexAliases;
 import co.elastic.clients.elasticsearch.indices.get_mapping.IndexMappingRecord;
 import co.elastic.clients.transport.endpoints.BooleanResponse;
+import util.ConfigUtils;
 
 public class IndicesService {
 	private static Logger log = Logger.getLogger(IndicesService.class);
 
-	public static void defineGamecastIndex(ElasticsearchClient client, String indexName) throws Exception {
+	public static void defineGamecastIndexUsingAPI(ElasticsearchClient client, String indexName) throws Exception {
 		try {
 			IndicesService.deleteIndex(client, indexName);
 
@@ -81,7 +83,7 @@ public class IndicesService {
 					.build();
 
 			// multi-mapping - (using a field as both a keyword and as text)
-			Property multiMappedProperty = getMultimappedProperty();
+			Property multiMappedProperty = getMultimappedTextProperty();
 			Map<String, Property> propertyMap = new HashMap<>();
 
 			// gamecast object - everything is multi-mapped
@@ -144,12 +146,33 @@ public class IndicesService {
 		}
 	}
 
+	public static void defineGamecastIndexUsingWithJson(ElasticsearchClient client, String indexMappingFile, String indexName) throws Exception {
+		try (InputStream input = IndicesService.class.getResourceAsStream("/json/gamecast_index.json");) {
+
+			IndicesService.deleteIndex(client, indexName);
+
+			CreateIndexRequest request = CreateIndexRequest.of(b -> b.index(indexName).withJson(input));
+
+			CreateIndexResponse response = client.indices().create(request);
+			if (!response.acknowledged()) {
+				log.error("Problem defining index: " + indexName + " from file: " + indexMappingFile);
+			} else {
+				log.info("Index " + indexName + " has been created with a mapping taken from " + ConfigUtils.getGamecastIndexDefinitionFile());
+			}
+
+			getIndexMapping(client, indexName);
+
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+
 	/**
 	 * I want all fields to be multi-mapped for search via text or keyword
 	 * 
 	 * @return
 	 */
-	private static Property getMultimappedProperty() {
+	private static Property getMultimappedTextProperty() {
 
 		KeywordProperty keywordProperty = new KeywordProperty.Builder().ignoreAbove(Integer.valueOf(256)).build();
 
