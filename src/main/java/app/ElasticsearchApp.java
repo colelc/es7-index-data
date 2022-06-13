@@ -3,8 +3,7 @@ package app;
 import org.apache.log4j.Logger;
 
 import elasticsesarch.service.ClientService;
-import elasticsesarch.service.QueryService;
-import util.ConfigUtils;
+import service.IngestPlaybyplayService;
 
 public class ElasticsearchApp {
 
@@ -17,16 +16,13 @@ public class ElasticsearchApp {
 
 		// what a great day it is today
 		try {
-			// client = ClientService.getESClient();
-
 			// new TireKickerService().go(ClientService.getESClient());
-			// RawDataIngestService.go();
+			// IngestGamecastService.go();
+			IngestPlaybyplayService.go();
 
 			// IndicesService.defineGamecastIndexUsingAPI(ClientService.getESClient(),
 			// ConfigUtils.getGamecastIndexName());
-			// IndicesService.defineGamecastIndexUsingWithJson(ClientService.getESClient(),
-			// ConfigUtils.getGamecastIndexDefinitionFile(),
-			// ConfigUtils.getGamecastIndexName());
+//			IndicesService.defineGamecastIndexUsingWithJson(ClientService.getESClient(), ConfigUtils.getGamecastIndexDefinitionFile(), ConfigUtils.getGamecastIndexName());
 
 //			AnalyzerService.analyzeGamecastField(ClientService.getESClient(), ConfigUtils.getGamecastIndexName(), "my_analyzer", "venueName", "Frank Erwin Center");
 //			AnalyzerService.analyzeGamecastField(ClientService.getESClient(), ConfigUtils.getGamecastIndexName(), null, "gameId", 401368093);
@@ -37,13 +33,13 @@ public class ElasticsearchApp {
 			// "multilingual");
 
 //			IndexerService.indexGamecastDataWithObjectMapper(ClientService.getESClient(), ConfigUtils.getGamecastIndexName());
-			// IndexerService.indexGamecastDataWithJson(ClientService.getESClient(), /**/
-			// ConfigUtils.getProperty("directory.gamecast.document"), /**/
-			// ConfigUtils.getGamecastIndexName());
+//			IndexerService.indexGamecastDataWithJson(ClientService.getESClient(), /**/
+//					ConfigUtils.getProperty("directory.gamecast.document"), /**/
+//					ConfigUtils.getGamecastIndexName());
 
 //			QueryService.matchAllQuery(ClientService.getESClient(), ConfigUtils.getGamecastIndexName());
 //			QueryService.matchQuery(ClientService.getESClient(), ConfigUtils.getGamecastIndexName(), "roadTeamName", "Duke");
-			QueryService.compoundQuery(ClientService.getESClient(), ConfigUtils.getGamecastIndexName(), "Duke");
+//			QueryService.compoundQuery(ClientService.getESClient(), ConfigUtils.getGamecastIndexName(), "Duke");
 			// log.info("ENGLISH");
 			// QueryService.testMultilingualMultiMatch(ClientService.getESClient(), "home");
 			// log.info("GERMAN");

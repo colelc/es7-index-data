@@ -1,24 +1,31 @@
 package data;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.google.gson.JsonArray;
 
 public class JsonData {
-	private static String jsonArrayAsString;
-	private static JsonArray jsonArray;
+	private static Map<String, JsonArray> playByPlayMapOfJsonArray;
+	private static JsonArray gamecastJsonArray;
 
-	public static String getJsonArrayAsString() {
-		return jsonArrayAsString;
+	public static JsonArray getGamecastJsonArray() {
+		return gamecastJsonArray;
 	}
 
-	public static void setJsonArrayAsString(String jsonArrayAsString) {
-		JsonData.jsonArrayAsString = jsonArrayAsString;
+	public static void setGamecastJsonArray(JsonArray gamecastJsonArray) {
+		JsonData.gamecastJsonArray = gamecastJsonArray;
 	}
 
-	public static JsonArray getJsonArray() {
-		return jsonArray;
+	public static Map<String, JsonArray> getPlayByPlayMapOfJsonArray() {
+		if (playByPlayMapOfJsonArray == null) {
+			playByPlayMapOfJsonArray = new HashMap<>();
+		}
+		return playByPlayMapOfJsonArray;
 	}
 
-	public static void setJsonArray(JsonArray jsonArray) {
-		JsonData.jsonArray = jsonArray;
+	public static void setPlayByPlayMapOfJsonArray(Map<String, JsonArray> playByPlayMapOfJsonArray) {
+		JsonData.playByPlayMapOfJsonArray = playByPlayMapOfJsonArray;
 	}
+
 }

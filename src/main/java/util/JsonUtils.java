@@ -29,4 +29,20 @@ public class JsonUtils {
 		}
 	}
 
+	public static JsonArray mapOfListOfMapsToJsonArray(Map<String, List<Map<String, String>>> map) throws Exception {
+		JsonArray retValue = new JsonArray();
+		try {
+			for (String key : map.keySet()) {
+				List<Map<String, String>> list = map.get(key);
+				Gson gson = new Gson();
+				JsonArray jsonArray = gson.toJsonTree(list).getAsJsonArray();
+				retValue.addAll(jsonArray);
+			}
+
+			return retValue;
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+
 }
