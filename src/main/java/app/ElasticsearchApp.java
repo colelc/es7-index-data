@@ -3,6 +3,7 @@ package app;
 import org.apache.log4j.Logger;
 
 import elasticsesarch.service.ClientService;
+import service.IngestPlaybyplayService;
 
 public class ElasticsearchApp {
 
@@ -18,7 +19,7 @@ public class ElasticsearchApp {
 			// new TireKickerService().go(ClientService.getESClient());
 			// IngestPlayerService.go();
 			// IngestGamecastService.go();
-			// IngestPlaybyplayService.go();
+			IngestPlaybyplayService.go();
 
 			// gamecast index
 			// IndicesService.defineGamecastIndexUsingAPI(ClientService.getESClient(),

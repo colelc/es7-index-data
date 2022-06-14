@@ -30,6 +30,7 @@ public class IngestPlaybyplayService extends RawDataIngestService {
 
 		try {
 			JsonData.setJsonArray(new JsonArray());
+
 			MappedData.setPlaybyplayData(ingestData(ConfigUtils.getProperty("directory.raw.input"), /**/
 					ConfigUtils.getProperty("files.playbyplay.input"), /**/
 					true));
@@ -104,7 +105,7 @@ public class IngestPlaybyplayService extends RawDataIngestService {
 							sublist = new ArrayList<>();
 							sublist.add(map);
 							data.put(ix, sublist);
-							// log.info(ix + " -> " + playerId);
+							log.info(ix + " -> " + playerId);
 						} else {
 							sublist.add(map);
 						}
@@ -271,30 +272,30 @@ public class IngestPlaybyplayService extends RawDataIngestService {
 		map.put("playerName", lookupMap.get("playerName"));
 		map.put("playerFirstName", lookupMap.get("playerFirstName"));
 		map.put("playerLastName", lookupMap.get("playerLastName"));
-		map.put("uniformNumber", lookupMap.get("uniformNumber"));
-		map.put("playerUrl", lookupMap.get("playerUrl"));
-		map.put("heightCm", lookupMap.get("heightCm"));
-		map.put("homeState", lookupMap.get("homeState"));
-		map.put("heightInches", lookupMap.get("heightInches"));
-		map.put("homeCity", lookupMap.get("homeCity"));
-		map.put("position", lookupMap.get("position"));
-		map.put("heightFeet", lookupMap.get("heightFeet"));
-		map.put("classYear", lookupMap.get("classYear"));
+//		map.put("uniformNumber", lookupMap.get("uniformNumber"));
+//		map.put("playerUrl", lookupMap.get("playerUrl"));
+//		map.put("heightCm", lookupMap.get("heightCm"));
+//		map.put("homeState", lookupMap.get("homeState"));
+//		map.put("heightInches", lookupMap.get("heightInches"));
+//		map.put("homeCity", lookupMap.get("homeCity"));
+//		map.put("position", lookupMap.get("position"));
+//		map.put("heightFeet", lookupMap.get("heightFeet"));
+//		map.put("classYear", lookupMap.get("classYear"));
 	}
 
 	private static void init(Map<String, String> map) {
 		map.put("playerName", "");
 		map.put("playerFirstName", "");
 		map.put("playerLastName", "");
-		map.put("uniformNumber", "");
-		map.put("playerUrl", "");
-		map.put("heightCm", "");
-		map.put("homeState", "");
-		map.put("heightInches", "");
-		map.put("homeCity", "");
-		map.put("position", "");
-		map.put("heightFeet", "");
-		map.put("classYear", "");
+//		map.put("uniformNumber", "");
+//		map.put("playerUrl", "");
+//		map.put("heightCm", "");
+//		map.put("homeState", "");
+//		map.put("heightInches", "");
+//		map.put("homeCity", "");
+//		map.put("position", "");
+//		map.put("heightFeet", "");
+//		map.put("classYear", "");
 	}
 
 }
