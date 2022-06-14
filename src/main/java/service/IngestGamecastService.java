@@ -2,6 +2,8 @@ package service;
 
 import org.apache.log4j.Logger;
 
+import com.google.gson.JsonArray;
+
 import data.JsonData;
 import data.MappedData;
 import util.ConfigUtils;
@@ -13,15 +15,17 @@ public class IngestGamecastService extends RawDataIngestService {
 	public static void go() throws Exception {
 
 		try {
+			JsonData.setJsonArray(new JsonArray());
 			MappedData.setGamecastData(ingestRawData(ConfigUtils.getProperty("directory.raw.input"), /**/
 					ConfigUtils.getProperty("files.gamecast.input"), /**/
 					true));
 
 			mapTeamConferenceKeys(MappedData.getGamecastData(), MappedData.getMappedGamecastData());
 
-			JsonData.setGamecastJsonArray(JsonUtils.listOfMapsToJsonArray(MappedData.getMappedGamecastData()));
+			JsonData.setJsonArray(JsonUtils.listOfMapsToJsonArray(MappedData.getMappedGamecastData()));
 
-			generateDocumentFiles(ConfigUtils.getProperty("directory.gamecast.document"), ConfigUtils.getProperty("gamecast.document.json.file.name"), JsonData.getGamecastJsonArray());
+			generateDocumentFiles(ConfigUtils.getProperty("directory.gamecast.document"), ConfigUtils.getProperty("gamecast.document.json.file.name"), JsonData.getJsonArray());
+
 		} catch (Exception e) {
 			throw e;
 		}

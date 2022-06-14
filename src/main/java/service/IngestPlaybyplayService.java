@@ -15,9 +15,13 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.log4j.Logger;
 
+import com.google.gson.JsonArray;
+
+import data.JsonData;
 import data.MappedData;
 import util.ConfigUtils;
 import util.FileUtils;
+import util.JsonUtils;
 
 public class IngestPlaybyplayService extends RawDataIngestService {
 	private static Logger log = Logger.getLogger(IngestGamecastService.class);
@@ -25,6 +29,7 @@ public class IngestPlaybyplayService extends RawDataIngestService {
 	public static void go() throws Exception {
 
 		try {
+			JsonData.setJsonArray(new JsonArray());
 			MappedData.setPlaybyplayData(ingestData(ConfigUtils.getProperty("directory.raw.input"), /**/
 					ConfigUtils.getProperty("files.playbyplay.input"), /**/
 					true));
@@ -32,11 +37,15 @@ public class IngestPlaybyplayService extends RawDataIngestService {
 			mapTeamConferenceKeysForPlaybyplay(MappedData.getPlaybyplayData(), MappedData.getMappedPlaybyplayData());
 			mapPlayerKeysForPlaybyplay();
 
-			// JsonData.setPlayByPlayJsonArray(JsonUtils.mapOfListOfMapsToJsonArray(MappedData.getMappedPlaybyplayData()));
-
-			// generateDocumentFiles(ConfigUtils.getProperty("directory.playbyplay.document"),
-			// ConfigUtils.getProperty("playbyplay.document.json.file.name"),
-			// JsonData.getPlayByPlayJsonArray());
+			int ix = 0;
+			for (String key : MappedData.getMappedPlaybyplayData().keySet()) {
+				List<Map<String, String>> data = MappedData.getMappedPlaybyplayData().get(key);
+				JsonData.setJsonArray(JsonUtils.listOfMapsToJsonArray(data));
+				generateDocumentFile(ConfigUtils.getProperty("directory.playbyplay.document"), /**/
+						ConfigUtils.getProperty("playbyplay.document.json.file.name"), /**/
+						JsonData.getJsonArray(), /**/
+						ix++);
+			}
 		} catch (Exception e) {
 			throw e;
 		}

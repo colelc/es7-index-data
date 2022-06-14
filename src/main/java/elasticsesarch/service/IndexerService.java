@@ -27,7 +27,7 @@ public class IndexerService {
 
 	public static void indexGamecastDataWithObjectMapper(ElasticsearchClient client, String indexName) throws Exception {
 
-		JsonData.getGamecastJsonArray().forEach(jsonElement -> {
+		JsonData.getJsonArray().forEach(jsonElement -> {
 			if (jsonElement.isJsonObject()) {
 				JsonObject jsonObject = jsonElement.getAsJsonObject();
 

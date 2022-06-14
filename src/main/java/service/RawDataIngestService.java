@@ -185,6 +185,26 @@ public class RawDataIngestService {
 
 	}
 
+	protected static void generateDocumentFile(String directory, String fileName, JsonArray json, int index) throws Exception {
+
+		ix = 0;
+
+		try (PrintWriter out = new PrintWriter(new FileWriter(directory + File.separator + fileName + "_" + String.valueOf(index) + ".json"))) {
+
+			json.forEach(jsonElement -> {
+				if (jsonElement.isJsonObject()) {
+					out.write(jsonElement.getAsJsonObject().toString());
+				}
+
+			});
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			e.printStackTrace();
+			System.exit(99);
+		}
+
+	}
+
 	protected static Map<String, String> valueLookup(Map<String, String> inMap, List<Map<String, String>> lookupList, String lookupKey) throws Exception {
 
 		if (lookupKey == null || lookupKey.trim().length() == 0) {
