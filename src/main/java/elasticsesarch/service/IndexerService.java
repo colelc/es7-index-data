@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -18,9 +19,10 @@ import co.elastic.clients.elasticsearch._types.Result;
 import co.elastic.clients.elasticsearch.core.IndexRequest;
 import co.elastic.clients.elasticsearch.core.IndexResponse;
 import data.JsonData;
-import util.ConfigUtils;
 import util.FileUtils;
+import util.JsonUtils;
 import vo.Gamecast;
+import vo.Player;
 
 public class IndexerService {
 	private static Logger log = Logger.getLogger(IndexerService.class);
@@ -66,8 +68,17 @@ public class IndexerService {
 
 	}
 
-	public static void indexGamecastDataWithJson(ElasticsearchClient client, String directory, String indexName) throws Exception {
-		Set<String> files = new HashSet<>(FileUtils.getFileListFromDirectory(directory, ConfigUtils.getProperty("gamecast.document.json.file.name")));
+	/**
+	 * only a single document per file ! not the best way
+	 * 
+	 * @param client
+	 * @param directory
+	 * @param targetFileName
+	 * @param indexName
+	 * @throws Exception
+	 */
+	public static void indexDocumentWithJson(ElasticsearchClient client, String directory, String targetFileName, String indexName) throws Exception {
+		Set<String> files = new HashSet<>(FileUtils.getFileListFromDirectory(directory, targetFileName));
 
 		files.forEach(file -> {
 			try (FileReader f = new FileReader(new File(directory, file))) {
@@ -82,6 +93,45 @@ public class IndexerService {
 						// response.index() + " ");
 				} else {
 					log.info("ERROR: " + response.result().toString());
+				}
+
+			} catch (Exception e) {
+				log.error(e.getMessage());
+				e.printStackTrace();
+				System.exit(99);
+			}
+		});
+	}
+
+	public static void indexDirectoryDocumentsWithJson(ElasticsearchClient client, String directory, String targetFileName, String indexName) throws Exception {
+		Set<String> files = new HashSet<>(FileUtils.getFileListFromDirectory(directory, targetFileName));
+
+		files.forEach(file -> {
+			try {
+				List<String> documentList = FileUtils.readFileIntoList(directory, file);
+
+				for (String docString : documentList) {
+					JsonObject jo = JsonUtils.stringToJsonObject(docString);
+					ObjectMapper objectMapper = new ObjectMapper();
+
+					Player player = objectMapper.readValue(jo.toString(), Player.class);
+
+					IndexRequest<Player> request;
+
+					request = IndexRequest.of(b -> b/**/
+							.index(indexName)/**/
+							.id(jo.get("id").getAsString())/**/
+							.document(player));
+
+					IndexResponse response = client.index(request);
+
+					if (response.result().compareTo(Result.Created) == 0) {
+						;// log.info(response.result().toString() + " " + response.id() + " -> " +
+							// response.index() + " ");
+					} else {
+						log.info("ERROR: " + response.result().toString());
+					}
+
 				}
 
 			} catch (Exception e) {

@@ -193,7 +193,7 @@ public class RawDataIngestService {
 
 			json.forEach(jsonElement -> {
 				if (jsonElement.isJsonObject()) {
-					out.write(jsonElement.getAsJsonObject().toString());
+					out.write(jsonElement.getAsJsonObject().toString() + "\n");
 				}
 
 			});

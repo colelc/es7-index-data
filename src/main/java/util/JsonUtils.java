@@ -7,13 +7,14 @@ import org.apache.log4j.Logger;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 public class JsonUtils {
 	private static Logger log = Logger.getLogger(JsonUtils.class);
 
-	public static String listOfMapsToJsonString(List<Map<String, String>> listOfMaps) throws Exception {
+	public static JsonObject stringToJsonObject(String data) throws Exception {
 		try {
-			return new Gson().toJson(listOfMapsToJsonArray(listOfMaps));
+			return new Gson().fromJson(data, JsonObject.class);
 		} catch (Exception e) {
 			throw e;
 		}

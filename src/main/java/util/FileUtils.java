@@ -1,6 +1,9 @@
 package util;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -16,6 +19,16 @@ public class FileUtils {
 					.filter(f -> f.getName().startsWith(targetFileName))/**/
 					.map(File::getName)/**/
 					.collect(Collectors.toSet());
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+
+	public static List<String> readFileIntoList(String directory, String fileName) throws Exception {
+		try {
+			String filePath = directory + File.separator + fileName;
+			List<String> lines = Files.readAllLines(Paths.get(filePath));
+			return lines;
 		} catch (Exception e) {
 			throw e;
 		}

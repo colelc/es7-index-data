@@ -146,8 +146,8 @@ public class IndicesService {
 		}
 	}
 
-	public static void defineGamecastIndexUsingWithJson(ElasticsearchClient client, String indexMappingFile, String indexName) throws Exception {
-		try (InputStream input = IndicesService.class.getResourceAsStream("/json/gamecast_index.json");) {
+	public static void defineIndexUsingWithJson(ElasticsearchClient client, String indexMappingFile, String indexName) throws Exception {
+		try (InputStream input = IndicesService.class.getResourceAsStream(indexMappingFile);) {
 
 			IndicesService.deleteIndex(client, indexName);
 

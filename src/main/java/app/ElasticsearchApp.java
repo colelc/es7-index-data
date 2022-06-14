@@ -3,7 +3,6 @@ package app;
 import org.apache.log4j.Logger;
 
 import elasticsesarch.service.ClientService;
-import service.IngestPlaybyplayService;
 
 public class ElasticsearchApp {
 
@@ -17,12 +16,18 @@ public class ElasticsearchApp {
 		// what a great day it is today
 		try {
 			// new TireKickerService().go(ClientService.getESClient());
+			// IngestPlayerService.go();
 			// IngestGamecastService.go();
-			IngestPlaybyplayService.go();
+			// IngestPlaybyplayService.go();
 
+			// gamecast index
 			// IndicesService.defineGamecastIndexUsingAPI(ClientService.getESClient(),
 			// ConfigUtils.getGamecastIndexName());
-//			IndicesService.defineGamecastIndexUsingWithJson(ClientService.getESClient(), ConfigUtils.getGamecastIndexDefinitionFile(), ConfigUtils.getGamecastIndexName());
+//			IndicesService.defineIndexUsingWithJson(ClientService.getESClient(), ConfigUtils.getGamecastIndexDefinitionFile(), ConfigUtils.getGamecastIndexName());
+			// player index
+//			IndicesService.defineIndexUsingWithJson(ClientService.getESClient(), /**/
+//					ConfigUtils.getProperty("player.index.definition.file"), /**/
+//					ConfigUtils.getProperty("es.index.name.player"));
 
 //			AnalyzerService.analyzeGamecastField(ClientService.getESClient(), ConfigUtils.getGamecastIndexName(), "my_analyzer", "venueName", "Frank Erwin Center");
 //			AnalyzerService.analyzeGamecastField(ClientService.getESClient(), ConfigUtils.getGamecastIndexName(), null, "gameId", 401368093);
@@ -32,9 +37,15 @@ public class ElasticsearchApp {
 			// PipelineService.simulatePipelineRequest(ClientService.getESClient(),
 			// "multilingual");
 
+//			IndexerService.indexDirectoryDocumentsWithJson(ClientService.getESClient(), /**/
+//					ConfigUtils.getProperty("directory.player.document"), /**/
+//					ConfigUtils.getProperty("player.document.json.file.name"), /**/
+//					ConfigUtils.getProperty("es.index.name.player")); /**/
+
 //			IndexerService.indexGamecastDataWithObjectMapper(ClientService.getESClient(), ConfigUtils.getGamecastIndexName());
-//			IndexerService.indexGamecastDataWithJson(ClientService.getESClient(), /**/
+//			IndexerService.indexDocumentWithJson(ClientService.getESClient(), /**/
 //					ConfigUtils.getProperty("directory.gamecast.document"), /**/
+//					ConfigUtils.getProperty(ConfigUtils.getProperty("gamecast.document.json.file.name")), /**/
 //					ConfigUtils.getGamecastIndexName());
 
 //			QueryService.matchAllQuery(ClientService.getESClient(), ConfigUtils.getGamecastIndexName());
@@ -56,6 +67,7 @@ public class ElasticsearchApp {
 		} catch (Exception e) {
 			log.error(e.getMessage());
 			e.printStackTrace();
+			System.exit(99);
 		}
 	}
 
