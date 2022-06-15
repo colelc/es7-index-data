@@ -2,6 +2,7 @@ module app {
 	exports vo; // IndexerService, method indexGamecastDataWithObjectMapper
 	exports data; // IndexerService, method indexDirectoryDocumentsWithJson (objectmapper)
 
+	requires java.sql;
 	requires log4j;
 	// requires elasticsearch.rest.high.level.client; //deprecated as of 7.15
 	requires elasticsearch.rest.client;

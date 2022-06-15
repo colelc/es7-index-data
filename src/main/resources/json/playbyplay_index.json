@@ -4,8 +4,8 @@
         "Playbyplay": {
           "type": "text",
           "fields": {
-            "gameAttendance": {
-              "type": "integer",
+            "gameId": {
+              "type": "text",
 	           "fields": {
 	              "keyword": {
 	                "type": "keyword",
@@ -17,65 +17,7 @@
               "type": "date",
               "format": "basic_date"
             },
-            "gamePercentageFull": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 256
-                }
-              }
-            },
-            "gameTimeUTC": {
-              "type": "date",
-              "format": "hour_minute"
-            },
-            "homeTeamConferenceLongName": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 256
-                }
-              }
-            },
-            "homeTeamConferenceShortName": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 256
-                }
-              }
-            },
-            "homeTeamName": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 256
-                }
-              }
-            },
-            "networkCoverage": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 256
-                }
-              }
-            },
-            "referees": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 256
-                }
-              }
-            },
-            "roadTeamConferenceLongName": {
+            "play": {
               "type": "text",
               "fields": {
                 "keyword": {
@@ -93,7 +35,7 @@
                 }
               }
             },
-            "roadTeamName": {
+            "playerFirstName": {
               "type": "text",
               "fields": {
                 "keyword": {
@@ -102,28 +44,10 @@
                 }
               }
             },
-            "sourceFile": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 256
-                }
-              }
-            },
-            "status": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 256
-                }
-              }
-            },
-            "venueCapacity": {
+            "homeTeamConferenceId": {
               "type": "integer"
             },
-            "venueCity": {
+            "roadTeamConferenceLongName": {
               "type": "text",
               "fields": {
                 "keyword": {
@@ -132,7 +56,7 @@
                 }
               }
             },
-            "venueName": {
+            "playerName": {
               "type": "text",
               "fields": {
                 "keyword": {
@@ -141,7 +65,52 @@
                 }
               }
             },
-            "venueState": {
+            "playerLastName": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+            "homeTeamConferenceShortName": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+             "sourceFile": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+            "roadTeamId": {
+              "type": "integer"
+            },
+            "seconds": {
+              "type": "integer"
+            },
+            "homeTeamConferenceLongName": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+            "roadTeamConferenceId": {
+              "type": "integer"
+            },
+            "id": {
               "type": "text",
               "fields": {
                 "keyword": {
@@ -151,63 +120,6 @@
               }
             }
           }
-        },
-        "gameAttendance": {
-          "type": "long"
-        },
-        "gameDay": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256
-            }
-          }
-        },
-        "gameId": {
-          "type": "keyword"
-        },
-        "gamePercentageFull": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256
-            }
-          }
-        },
-        "gameTimeUTC": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256
-            }
-          }
-        },
-        "homeTeamConferenceId": {
-          "type": "keyword"
-        },
-        "homeTeamConferenceLongName": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256
-            }
-          }
-        },
-        "homeTeamConferenceShortName": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256
-            }
-          }
-        },
-        "homeTeamId": {
-          "type": "keyword"
         },
         "homeTeamName": {
           "type": "text",
@@ -218,7 +130,10 @@
             }
           }
         },
-        "id": {
+        "homeTeamId": {
+          "type": "integer"
+        },
+        "playerId": {
           "type": "text",
           "fields": {
             "keyword": {
@@ -226,107 +141,8 @@
               "ignore_above": 256
             }
           }
-        },
-        "networkCoverage": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256
-            }
-          }
-        },
-        "recordId": {
-          "type": "keyword"
-        },
-        "referees": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256
-            }
-          }
-        },
-        "roadTeamConferenceId": {
-          "type": "keyword"
-        },
-        "roadTeamConferenceLongName": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256
-            }
-          }
-        },
-        "roadTeamConferenceShortName": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256
-            }
-          }
-        },
-        "roadTeamId": {
-          "type": "keyword"
         },
         "roadTeamName": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256
-            }
-          }
-        },
-        "sourceFile": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256
-            }
-          }
-        },
-        "status": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256
-            }
-          }
-        },
-        "venueCapacity": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256
-            }
-          }
-        },
-        "venueCity": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256
-            }
-          }
-        },
-        "venueName": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256
-            }
-          }
-        },
-        "venueState": {
           "type": "text",
           "fields": {
             "keyword": {

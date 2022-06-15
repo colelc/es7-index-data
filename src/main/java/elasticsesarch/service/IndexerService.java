@@ -22,7 +22,6 @@ import data.JsonData;
 import util.FileUtils;
 import util.JsonUtils;
 import vo.Gamecast;
-import vo.Player;
 
 public class IndexerService {
 	private static Logger log = Logger.getLogger(IndexerService.class);
@@ -103,7 +102,7 @@ public class IndexerService {
 		});
 	}
 
-	public static void indexDirectoryDocumentsWithJson(ElasticsearchClient client, String directory, String targetFileName, String indexName) throws Exception {
+	public static void indexDirectoryDocumentsWithJson(ElasticsearchClient client, String directory, String targetFileName, String indexName, String className) throws Exception {
 		Set<String> files = new HashSet<>(FileUtils.getFileListFromDirectory(directory, targetFileName));
 
 		files.forEach(file -> {
@@ -114,14 +113,17 @@ public class IndexerService {
 					JsonObject jo = JsonUtils.stringToJsonObject(docString);
 					ObjectMapper objectMapper = new ObjectMapper();
 
-					Player player = objectMapper.readValue(jo.toString(), Player.class);
+					// Player player = objectMapper.readValue(jo.toString(), Player.class);
+					Object o = objectMapper.readValue(jo.toString(), Class.forName(className));
 
-					IndexRequest<Player> request;
+					// IndexRequest<Player> request;
+					IndexRequest<Object> request;
 
 					request = IndexRequest.of(b -> b/**/
 							.index(indexName)/**/
 							.id(jo.get("id").getAsString())/**/
-							.document(player));
+							// .document(player));/**/
+							.document(o));
 
 					IndexResponse response = client.index(request);
 
