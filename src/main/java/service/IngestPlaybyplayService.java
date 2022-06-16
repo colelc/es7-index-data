@@ -25,7 +25,10 @@ import util.JsonUtils;
 public class IngestPlaybyplayService extends RawDataIngestService {
 	private static Logger log = Logger.getLogger(IngestGamecastService.class);
 
-	public static void go() throws Exception {
+	public static void go(String run) throws Exception {
+		if (!ConfigUtils.execute(run, "IngestPlaybyplayService")) {
+			return;
+		}
 
 		try {
 			JsonData.setJsonArray(new JsonArray());

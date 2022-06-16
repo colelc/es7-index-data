@@ -146,7 +146,11 @@ public class IndicesService {
 		}
 	}
 
-	public static void defineIndexUsingWithJson(ElasticsearchClient client, String indexMappingFile, String indexName) throws Exception {
+	public static void defineIndexUsingWithJson(ElasticsearchClient client, String indexMappingFile, String indexName, String run) throws Exception {
+		if (!ConfigUtils.execute(run, "IndicesService - Define index for " + indexName)) {
+			return;
+		}
+
 		try (InputStream input = IndicesService.class.getResourceAsStream(indexMappingFile);) {
 
 			IndicesService.deleteIndex(client, indexName);
@@ -157,7 +161,7 @@ public class IndicesService {
 			if (!response.acknowledged()) {
 				log.error("Problem defining index: " + indexName + " from file: " + indexMappingFile);
 			} else {
-				log.info("Index " + indexName + " has been created with a mapping taken from " + ConfigUtils.getGamecastIndexDefinitionFile());
+				log.info("Index " + indexName + " has been created with a mapping taken from " + indexMappingFile);
 			}
 
 			getIndexMapping(client, indexName);

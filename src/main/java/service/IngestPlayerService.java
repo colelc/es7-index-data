@@ -10,7 +10,10 @@ import util.JsonUtils;
 public class IngestPlayerService extends RawDataIngestService {
 	private static Logger log = Logger.getLogger(IngestPlayerService.class);
 
-	public static void go() throws Exception {
+	public static void go(String run) throws Exception {
+		if (!ConfigUtils.execute(run, "IngestPlayerService")) {
+			return;
+		}
 
 		try {
 			JsonData.setJsonArray(JsonUtils.listOfMapsToJsonArray(MappedData.getPlayerData()));

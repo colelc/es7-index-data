@@ -13,6 +13,7 @@ import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch.core.BulkRequest;
 import co.elastic.clients.elasticsearch.core.BulkResponse;
 import co.elastic.clients.elasticsearch.core.bulk.BulkResponseItem;
+import util.ConfigUtils;
 import util.FileUtils;
 import util.JsonUtils;
 
@@ -20,7 +21,10 @@ public class BulkIndexerService {
 	private static long total = 0;
 	private static Logger log = Logger.getLogger(BulkIndexerService.class);
 
-	public static void indexDirectoryDocumentsWithJson(ElasticsearchClient client, String directory, String targetFileName, String indexName, String className) throws Exception {
+	public static void indexDirectoryDocumentsWithJson(ElasticsearchClient client, String directory, String targetFileName, String indexName, String className, String run) throws Exception {
+		if (!ConfigUtils.execute(run, "Bulk Index Service - Index documents for " + indexName)) {
+			return;
+		}
 
 		Set<String> files = new HashSet<>(FileUtils.getFileListFromDirectory(directory, targetFileName));
 

@@ -41,7 +41,6 @@ public class RawDataIngestService {
 			e.printStackTrace();
 			System.exit(99);
 		}
-
 	}
 
 	protected static List<Map<String, String>> ingestRawData(String directory, String targetFileName, boolean includeGameday) throws Exception {

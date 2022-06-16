@@ -16,7 +16,10 @@ import util.JsonUtils;
 public class IngestGamestatService extends RawDataIngestService {
 	private static Logger log = Logger.getLogger(IngestGamestatService.class);
 
-	public static void go() throws Exception {
+	public static void go(String run) throws Exception {
+		if (!ConfigUtils.execute(run, "IngestGamestatService")) {
+			return;
+		}
 
 		try {
 			JsonData.setJsonArray(new JsonArray());
@@ -28,7 +31,6 @@ public class IngestGamestatService extends RawDataIngestService {
 			List<Map<String, String>> mapped = new ArrayList<>();
 			doPlayerMapping(MappedData.getForESMappedData(), mapped);
 
-//			JsonData.setJsonArray(JsonUtils.listOfMapsToJsonArray(MappedData.getForESMappedData()));
 			JsonData.setJsonArray(JsonUtils.listOfMapsToJsonArray(mapped));
 
 			generateDocumentFile(ConfigUtils.getProperty("directory.gamestat.document"), ConfigUtils.getProperty("gamestat.document.json.file.name"), JsonData.getJsonArray(), 0);

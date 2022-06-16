@@ -23,10 +23,10 @@ public class ElasticsearchApp {
 
 		// what a great day it is today
 		try {
-			IngestPlayerService.go();
-			IngestGamecastService.go();
-			IngestGamestatService.go();
-			IngestPlaybyplayService.go();
+			IngestPlayerService.go(ConfigUtils.getProperty("ingest.run.player"));
+			IngestGamecastService.go(ConfigUtils.getProperty("ingest.run.gamecast"));
+			IngestGamestatService.go(ConfigUtils.getProperty("ingest.run.gamestat"));
+			IngestPlaybyplayService.go(ConfigUtils.getProperty("ingest.run.playbyplay"));
 
 			// gamecast index definition - this would be for dynamic index creation
 			// IndicesService.defineGamecastIndexUsingAPI(ClientService.getESClient(),
@@ -35,22 +35,26 @@ public class ElasticsearchApp {
 			// player index definition
 			IndicesService.defineIndexUsingWithJson(ClientService.getESClient(), /**/
 					ConfigUtils.getProperty("player.index.definition.file"), /**/
-					ConfigUtils.getProperty("es.index.name.player"));
+					ConfigUtils.getProperty("es.index.name.player"), /**/
+					ConfigUtils.getProperty("index.define.player"));
 
 			// gamecast index definition
 			IndicesService.defineIndexUsingWithJson(ClientService.getESClient(), /**/
 					ConfigUtils.getProperty("gamecast.index.definition.file"), /**/
-					ConfigUtils.getProperty("es.index.name.gamecast"));
+					ConfigUtils.getProperty("es.index.name.gamecast"), /**/
+					ConfigUtils.getProperty("index.define.gamecast"));
 
 			// game stats index definition
 			IndicesService.defineIndexUsingWithJson(ClientService.getESClient(), /**/
 					ConfigUtils.getProperty("gamestat.index.definition.file"), /**/
-					ConfigUtils.getProperty("es.index.name.gamestat"));
+					ConfigUtils.getProperty("es.index.name.gamestat"), /**/
+					ConfigUtils.getProperty("index.define.gamestat"));
 
 			// play-by-play index definition
 			IndicesService.defineIndexUsingWithJson(ClientService.getESClient(), /**/
 					ConfigUtils.getProperty("playbyplay.index.definition.file"), /**/
-					ConfigUtils.getProperty("es.index.name.playbyplay"));
+					ConfigUtils.getProperty("es.index.name.playbyplay"), /**/
+					ConfigUtils.getProperty("index.define.playbyplay"));
 
 //			AnalyzerService.analyzeGamecastField(ClientService.getESClient(), ConfigUtils.getGamecastIndexName(), "my_analyzer", "venueName", "Frank Erwin Center");
 //			AnalyzerService.analyzeGamecastField(ClientService.getESClient(), ConfigUtils.getGamecastIndexName(), null, "gameId", 401368093);
@@ -61,24 +65,28 @@ public class ElasticsearchApp {
 					ConfigUtils.getProperty("directory.player.document"), /**/
 					ConfigUtils.getProperty("player.document.json.file.name"), /**/
 					ConfigUtils.getProperty("es.index.name.player"), /**/
-					"vo.Player"); /**/
+					"vo.Player", /**/
+					ConfigUtils.getProperty("documents.index.player")); /**/
 
 			IndexerService.indexDocumentWithJson(ClientService.getESClient(), /**/
 					ConfigUtils.getProperty("directory.gamecast.document"), /**/
-					ConfigUtils.getProperty(ConfigUtils.getProperty("gamecast.document.json.file.name")), /**/
-					ConfigUtils.getGamecastIndexName());
+					ConfigUtils.getProperty("gamecast.document.json.file.name"), /**/
+					ConfigUtils.getProperty("es.index.name.gamecast"), /**/
+					ConfigUtils.getProperty("documents.index.gamecast"));
 
 			BulkIndexerService.indexDirectoryDocumentsWithJson(ClientService.getESClient(), /**/
 					ConfigUtils.getProperty("directory.gamestat.document"), /**/
 					ConfigUtils.getProperty("gamestat.document.json.file.name"), /**/
 					ConfigUtils.getProperty("es.index.name.gamestat"), /**/
-					"vo.Gamestat"); /**/
+					"vo.Gamestat", /**/
+					ConfigUtils.getProperty("documents.index.gamestat")); /**/
 
 			BulkIndexerService.indexDirectoryDocumentsWithJson(ClientService.getESClient(), /**/
 					ConfigUtils.getProperty("directory.playbyplay.document"), /**/
 					ConfigUtils.getProperty("playbyplay.document.json.file.name"), /**/
 					ConfigUtils.getProperty("es.index.name.playbyplay"), /**/
-					"vo.Playbyplay"); /**/
+					"vo.Playbyplay", /**/
+					ConfigUtils.getProperty("documents.index.playbyplay")); /**/
 
 //			QueryService.matchAllQuery(ClientService.getESClient(), ConfigUtils.getGamecastIndexName());
 //			QueryService.matchQuery(ClientService.getESClient(), ConfigUtils.getGamecastIndexName(), "roadTeamName", "Duke");

@@ -9,10 +9,13 @@ public class ConfigUtils {
 	private static Logger log = Logger.getLogger(ConfigUtils.class);
 
 	private static Properties config = new Properties();
+	private static Boolean override = Boolean.FALSE;
 
 	static {
 		try {
 			loadProperties();
+
+			override = ConfigUtils.getProperty("global.override.flag").trim().toUpperCase().compareTo("N") == 0 ? Boolean.FALSE : Boolean.TRUE;
 		} catch (Exception e) {
 			log.error(e.getMessage());
 			e.printStackTrace();
@@ -62,29 +65,22 @@ public class ConfigUtils {
 		}
 	}
 
-	public static String getGamecastIndexDefinitionFile() throws Exception {
-		try {
-			return getProperty("gamecast.index.definition.file");
-		} catch (Exception e) {
-			throw e;
-		}
+	public static Boolean override() {
+		return override;
 	}
 
-//	public static String getGamecastJsonOutputFile() throws Exception {
-//		try {
-//			return getProperty("directory.gamecast.document") + File.separator + getProperty("gamecast.json.file.name");
-//		} catch (Exception e) {
-//			throw e;
-//		}
-//	}
-
-	public static String getGamecastIndexName() throws Exception {
-		try {
-			return ConfigUtils.getProperty("es.index.name.gamecast");
-		} catch (Exception e) {
-			throw e;
+	public static Boolean execute(String run, String service) {
+		if (ConfigUtils.override()) {
+			log.info("Global override flag is TRUE: " + service + " will execute");
+			return ConfigUtils.override();
+		}
+		if (run != null && run.trim().toUpperCase().compareTo("N") == 0) {
+			log.info(service + " will take no action because run flag is set to N");
+			return Boolean.FALSE;
 		}
 
+		log.info(service + " will execute");
+		return Boolean.TRUE;
 	}
 
 }
