@@ -4,7 +4,12 @@ import org.apache.log4j.Logger;
 
 import elasticsesarch.service.BulkIndexerService;
 import elasticsesarch.service.ClientService;
+import elasticsesarch.service.IndexerService;
 import elasticsesarch.service.IndicesService;
+import service.IngestGamecastService;
+import service.IngestGamestatService;
+import service.IngestPlaybyplayService;
+import service.IngestPlayerService;
 import util.ConfigUtils;
 
 public class ElasticsearchApp {
@@ -18,19 +23,29 @@ public class ElasticsearchApp {
 
 		// what a great day it is today
 		try {
-			// IngestPlayerService.go();
-			// IngestGamecastService.go();
-			// IngestPlaybyplayService.go();
+			IngestPlayerService.go();
+			IngestGamecastService.go();
+			IngestGamestatService.go();
+			IngestPlaybyplayService.go();
 
-			// gamecast index definition
+			// gamecast index definition - this would be for dynamic index creation
 			// IndicesService.defineGamecastIndexUsingAPI(ClientService.getESClient(),
 			// ConfigUtils.getGamecastIndexName());
-//			IndicesService.defineIndexUsingWithJson(ClientService.getESClient(), ConfigUtils.getGamecastIndexDefinitionFile(), ConfigUtils.getGamecastIndexName());
 
 			// player index definition
-//			IndicesService.defineIndexUsingWithJson(ClientService.getESClient(), /**/
-//					ConfigUtils.getProperty("player.index.definition.file"), /**/
-//					ConfigUtils.getProperty("es.index.name.player"));
+			IndicesService.defineIndexUsingWithJson(ClientService.getESClient(), /**/
+					ConfigUtils.getProperty("player.index.definition.file"), /**/
+					ConfigUtils.getProperty("es.index.name.player"));
+
+			// gamecast index definition
+			IndicesService.defineIndexUsingWithJson(ClientService.getESClient(), /**/
+					ConfigUtils.getProperty("gamecast.index.definition.file"), /**/
+					ConfigUtils.getProperty("es.index.name.gamecast"));
+
+			// game stats index definition
+			IndicesService.defineIndexUsingWithJson(ClientService.getESClient(), /**/
+					ConfigUtils.getProperty("gamestat.index.definition.file"), /**/
+					ConfigUtils.getProperty("es.index.name.gamestat"));
 
 			// play-by-play index definition
 			IndicesService.defineIndexUsingWithJson(ClientService.getESClient(), /**/
@@ -42,17 +57,22 @@ public class ElasticsearchApp {
 //			AnalyzerService.analyzeGamecastField(ClientService.getESClient(), ConfigUtils.getGamecastIndexName(), null, "gameTimeUTC", "01:00");
 //			AnalyzerService.analyzeGamecastField(ClientService.getESClient(), ConfigUtils.getGamecastIndexName(), null, "gameDay", 20220216);
 
-//			IndexerService.indexDirectoryDocumentsWithJson(ClientService.getESClient(), /**/
-//					ConfigUtils.getProperty("directory.player.document"), /**/
-//					ConfigUtils.getProperty("player.document.json.file.name"), /**/
-//					ConfigUtils.getProperty("es.index.name.player"),/**/
-//			Player.class); /**/
+			IndexerService.indexDirectoryDocumentsWithJson(ClientService.getESClient(), /**/
+					ConfigUtils.getProperty("directory.player.document"), /**/
+					ConfigUtils.getProperty("player.document.json.file.name"), /**/
+					ConfigUtils.getProperty("es.index.name.player"), /**/
+					"vo.Player"); /**/
 
-//			IndexerService.indexGamecastDataWithObjectMapper(ClientService.getESClient(), ConfigUtils.getGamecastIndexName());
-//			IndexerService.indexDocumentWithJson(ClientService.getESClient(), /**/
-//					ConfigUtils.getProperty("directory.gamecast.document"), /**/
-//					ConfigUtils.getProperty(ConfigUtils.getProperty("gamecast.document.json.file.name")), /**/
-//					ConfigUtils.getGamecastIndexName());
+			IndexerService.indexDocumentWithJson(ClientService.getESClient(), /**/
+					ConfigUtils.getProperty("directory.gamecast.document"), /**/
+					ConfigUtils.getProperty(ConfigUtils.getProperty("gamecast.document.json.file.name")), /**/
+					ConfigUtils.getGamecastIndexName());
+
+			BulkIndexerService.indexDirectoryDocumentsWithJson(ClientService.getESClient(), /**/
+					ConfigUtils.getProperty("directory.gamestat.document"), /**/
+					ConfigUtils.getProperty("gamestat.document.json.file.name"), /**/
+					ConfigUtils.getProperty("es.index.name.gamestat"), /**/
+					"vo.Gamestat"); /**/
 
 			BulkIndexerService.indexDirectoryDocumentsWithJson(ClientService.getESClient(), /**/
 					ConfigUtils.getProperty("directory.playbyplay.document"), /**/

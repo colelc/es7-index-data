@@ -7,25 +7,25 @@ import java.util.Map;
 
 public class MappedData {
 
-	private static List<Map<String, String>> gamecastData;
-	private static Map<String, List<Map<String, String>>> playbyplayData;
-
 	private static List<Map<String, String>> conferenceData;
 	private static List<Map<String, String>> teamData;
 	private static List<Map<String, String>> playerData;
 
-	private static List<Map<String, String>> mappedGamecastData; // to ES
-	private static Map<String, List<Map<String, String>>> mappedPlaybyplayData; // to ES
+	private static List<Map<String, String>> data;
+	private static Map<String, List<Map<String, String>>> doubleMappedData;
 
-	public static List<Map<String, String>> getGamecastData() {
-		if (gamecastData == null) {
-			gamecastData = new ArrayList<>();
+	private static List<Map<String, String>> forESMappedData; // to ES
+	private static Map<String, List<Map<String, String>>> forESDoubleMappedData; // to ES
+
+	public static List<Map<String, String>> getData() {
+		if (data == null) {
+			data = new ArrayList<>();
 		}
-		return gamecastData;
+		return data;
 	}
 
-	public static void setGamecastData(List<Map<String, String>> gamecastData) {
-		MappedData.gamecastData = gamecastData;
+	public static void setData(List<Map<String, String>> data) {
+		MappedData.data = data;
 	}
 
 	public static List<Map<String, String>> getConferenceData() {
@@ -50,15 +50,15 @@ public class MappedData {
 		MappedData.teamData = teamData;
 	}
 
-	public static List<Map<String, String>> getMappedGamecastData() {
-		if (mappedGamecastData == null) {
-			mappedGamecastData = new ArrayList<>();
+	public static List<Map<String, String>> getForESMappedData() {
+		if (forESMappedData == null) {
+			forESMappedData = new ArrayList<>();
 		}
-		return mappedGamecastData;
+		return forESMappedData;
 	}
 
-	public static void setMappedGamecastData(List<Map<String, String>> mappedGamecastData) {
-		MappedData.mappedGamecastData = mappedGamecastData;
+	public static void setForESMappedData(List<Map<String, String>> forESMappedData) {
+		MappedData.forESMappedData = forESMappedData;
 	}
 
 	public static List<Map<String, String>> getPlayerData() {
@@ -72,27 +72,26 @@ public class MappedData {
 		MappedData.playerData = playerData;
 	}
 
-	public static Map<String, List<Map<String, String>>> getPlaybyplayData() {
-		if (playbyplayData == null) {
-			// List<Map<String, String>> temp = new ArrayList<>();
-			playbyplayData = new HashMap<String, List<Map<String, String>>>();
+	public static Map<String, List<Map<String, String>>> getDoubleMappedData() {
+		if (doubleMappedData == null) {
+			doubleMappedData = new HashMap<String, List<Map<String, String>>>();
 		}
-		return playbyplayData;
+		return doubleMappedData;
 	}
 
-	public static void setPlaybyplayData(Map<String, List<Map<String, String>>> playbyplayData) {
-		MappedData.playbyplayData = playbyplayData;
+	public static void setDoubleMappedData(Map<String, List<Map<String, String>>> doubleMappedData) {
+		MappedData.doubleMappedData = doubleMappedData;
 	}
 
-	public static Map<String, List<Map<String, String>>> getMappedPlaybyplayData() {
-		if (mappedPlaybyplayData == null) {
-			mappedPlaybyplayData = new HashMap<String, List<Map<String, String>>>();
+	public static Map<String, List<Map<String, String>>> getForESDoubleMappedData() {
+		if (forESDoubleMappedData == null) {
+			forESDoubleMappedData = new HashMap<String, List<Map<String, String>>>();
 		}
-		return mappedPlaybyplayData;
+		return forESDoubleMappedData;
 	}
 
-	public static void setMappedPlaybyplayData(Map<String, List<Map<String, String>>> mappedPlaybyplayData) {
-		MappedData.mappedPlaybyplayData = mappedPlaybyplayData;
+	public static void setForESDoubleMappedData(Map<String, List<Map<String, String>>> forESDoubleMappedData) {
+		MappedData.forESDoubleMappedData = forESDoubleMappedData;
 	}
 
 }

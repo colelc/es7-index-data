@@ -1,0 +1,169 @@
+{
+    "mappings": {
+      "properties": {
+        "Gamestat": {
+          "type": "text",
+          "fields": {
+	           "id": {
+	              "type": "text",
+		           "fields": {
+		              "keyword": {
+		                "type": "keyword",
+		                "ignore_above": 256
+		              }
+		           }
+	            },
+	          
+	            "gameId": {
+	              "type": "text",
+		           "fields": {
+		              "keyword": {
+		                "type": "keyword",
+		                "ignore_above": 256
+		              }
+		           }
+	            },
+	            "gameDay": {
+	              "type": "date",
+	              "format": "basic_date"
+	            },
+	            "playerId": {
+	              "type": "integer",
+	              "fields": {
+	                "keyword": {
+	                  "type": "keyword",
+	                  "ignore_above": 256
+	                }
+	              }
+	            },
+	            "playerFirstName": {
+	              "type": "text",
+	              "fields": {
+	                "keyword": {
+	                  "type": "keyword",
+	                  "ignore_above": 256
+	                }
+	              }
+	            },
+	            "playerLastName": {
+	              "type": "text",
+	              "fields": {
+	                "keyword": {
+	                  "type": "keyword",
+	                  "ignore_above": 256
+	                }
+	              }
+	            },
+	            "playerName": {
+	              "type": "text",
+	              "fields": {
+	                "keyword": {
+	                  "type": "keyword",
+	                  "ignore_above": 256
+	                }
+	              }
+	            },
+	            "homeTeamId": {
+	              "type": "integer"
+	            },
+	            "homeTeamName": {
+	              "type": "text",
+	              "fields": {
+	                "keyword": {
+	                  "type": "keyword",
+	                  "ignore_above": 256
+	                }
+	              }
+	            },
+	            "homeTeamConferenceId": {
+	              "type": "integer",
+	              "fields": {
+	                "keyword": {
+	                  "type": "keyword",
+	                  "ignore_above": 256
+	                }
+	              }
+	            },
+	             "sourceFile": {
+	              "type": "text",
+	              "fields": {
+	                "keyword": {
+	                  "type": "keyword",
+	                  "ignore_above": 256
+	                }
+	              }
+	            },
+	            "roadTeamId": {
+	              "type": "integer"
+	            },
+	            "roadTeamName": {
+	              "type": "text",
+	              "fields": {
+	                "keyword": {
+	                  "type": "keyword",
+	                  "ignore_above": 256
+	                }
+	              }
+	            },
+	            "roadTeamConferenceId": {
+	              "type": "integer"
+	            },
+	            "playerMinutes": {
+	              "type": "integer",
+	              "fields": {
+	                "keyword": {
+	                  "type": "keyword",
+	                  "ignore_above": 256
+	                }
+	              }
+	            },
+	            "playerFgAttempted" : {
+	            	"type": "integer"
+	            },
+	            "playerFgMade" : {
+	            	"type": "integer"
+	            },
+	            "playerFg3Attempted" : {
+	            	"type": "integer"
+	            },
+	            "playerFg3Made" : {
+	            	"type": "integer"
+	            },
+	            "playerFtAttempted" : {
+	            	"type": "integer"
+	            },
+	            "playerFtMade" : {
+	            	"type": "integer"
+	            },
+	            "playerOffensiveRebounds" : {
+	            	"type": "integer"
+	            },
+	            "playerDefensiveRebounds" : {
+	            	"type": "integer"
+	            },
+	            "playerTotalRebounds" : {
+	            	"type": "integer"
+	            },
+	            "playerAssists" : {
+	            	"type": "integer"
+	            },
+	            "playerSteals" : {
+	            	"type": "integer"
+	            },
+	            "playerBlocks" : {
+	            	"type": "integer"
+	            },
+	            "playerTurnovers" : {
+	            	"type": "integer"
+	            },
+	            "playerFouls" : {
+	            	"type": "integer"
+	            },
+	            "playerPointsScored" : {
+	            	"type": "integer"
+	            }
+	          }
+	        }
+      }
+    }
+}
