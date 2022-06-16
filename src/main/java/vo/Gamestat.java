@@ -3,21 +3,12 @@ package vo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Gamestat {
+public class Gamestat extends Base {
 
-	private String id;
-	private String gameId;
-	private String gameDay;
 	private Integer playerId;
 	private String playerFirstName;
 	private String playerLastName;
 	private String playerName;
-	private Integer homeTeamId;
-	private String homeTeamName;
-	private Integer homeTeamConferenceId;
-	private Integer roadTeamId;
-	private String roadTeamName;
-	private Integer roadTeamConferenceId;
 	private Integer playerMinutes;
 	private Integer playerFgAttempted;
 	private Integer playerFgMade;
@@ -34,30 +25,9 @@ public class Gamestat {
 	private Integer playerTurnovers;
 	private Integer playerFouls;
 	private Integer playerPointsScored;
-	private String sourceFile;
 
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public String getGameId() {
-		return gameId;
-	}
-
-	public void setGameId(String gameId) {
-		this.gameId = gameId;
-	}
-
-	public String getGameDay() {
-		return gameDay;
-	}
-
-	public void setGameDay(String gameDay) {
-		this.gameDay = gameDay;
+	public Gamestat() {
+		super();
 	}
 
 	public Integer getPlayerId() {
@@ -90,54 +60,6 @@ public class Gamestat {
 
 	public void setPlayerName(String playerName) {
 		this.playerName = playerName;
-	}
-
-	public Integer getHomeTeamId() {
-		return homeTeamId;
-	}
-
-	public void setHomeTeamId(Integer homeTeamId) {
-		this.homeTeamId = homeTeamId;
-	}
-
-	public String getHomeTeamName() {
-		return homeTeamName;
-	}
-
-	public void setHomeTeamName(String homeTeamName) {
-		this.homeTeamName = homeTeamName;
-	}
-
-	public Integer getHomeTeamConferenceId() {
-		return homeTeamConferenceId;
-	}
-
-	public void setHomeTeamConferenceId(Integer homeTeamConferenceId) {
-		this.homeTeamConferenceId = homeTeamConferenceId;
-	}
-
-	public Integer getRoadTeamId() {
-		return roadTeamId;
-	}
-
-	public void setRoadTeamId(Integer roadTeamId) {
-		this.roadTeamId = roadTeamId;
-	}
-
-	public String getRoadTeamName() {
-		return roadTeamName;
-	}
-
-	public void setRoadTeamName(String roadTeamName) {
-		this.roadTeamName = roadTeamName;
-	}
-
-	public Integer getRoadTeamConferenceId() {
-		return roadTeamConferenceId;
-	}
-
-	public void setRoadTeamConferenceId(Integer roadTeamConferenceId) {
-		this.roadTeamConferenceId = roadTeamConferenceId;
 	}
 
 	public Integer getPlayerMinutes() {
@@ -268,11 +190,4 @@ public class Gamestat {
 		this.playerPointsScored = playerPointsScored;
 	}
 
-	public String getSourceFile() {
-		return sourceFile;
-	}
-
-	public void setSourceFile(String sourceFile) {
-		this.sourceFile = sourceFile;
-	}
 }

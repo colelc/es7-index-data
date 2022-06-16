@@ -4,7 +4,6 @@ import org.apache.log4j.Logger;
 
 import elasticsesarch.service.BulkIndexerService;
 import elasticsesarch.service.ClientService;
-import elasticsesarch.service.IndexerService;
 import elasticsesarch.service.IndicesService;
 import service.IngestGamecastService;
 import service.IngestGamestatService;
@@ -61,18 +60,19 @@ public class ElasticsearchApp {
 //			AnalyzerService.analyzeGamecastField(ClientService.getESClient(), ConfigUtils.getGamecastIndexName(), null, "gameTimeUTC", "01:00");
 //			AnalyzerService.analyzeGamecastField(ClientService.getESClient(), ConfigUtils.getGamecastIndexName(), null, "gameDay", 20220216);
 
-			IndexerService.indexDirectoryDocumentsWithJson(ClientService.getESClient(), /**/
+			BulkIndexerService.indexDirectoryDocumentsWithJson(ClientService.getESClient(), /**/
 					ConfigUtils.getProperty("directory.player.document"), /**/
 					ConfigUtils.getProperty("player.document.json.file.name"), /**/
 					ConfigUtils.getProperty("es.index.name.player"), /**/
 					"vo.Player", /**/
 					ConfigUtils.getProperty("documents.index.player")); /**/
 
-			IndexerService.indexDocumentWithJson(ClientService.getESClient(), /**/
+			BulkIndexerService.indexDirectoryDocumentsWithJson(ClientService.getESClient(), /**/
 					ConfigUtils.getProperty("directory.gamecast.document"), /**/
 					ConfigUtils.getProperty("gamecast.document.json.file.name"), /**/
 					ConfigUtils.getProperty("es.index.name.gamecast"), /**/
-					ConfigUtils.getProperty("documents.index.gamecast"));
+					"vo.Gamecast", /**/
+					ConfigUtils.getProperty("documents.index.gamecast")); /**/
 
 			BulkIndexerService.indexDirectoryDocumentsWithJson(ClientService.getESClient(), /**/
 					ConfigUtils.getProperty("directory.gamestat.document"), /**/
@@ -88,17 +88,11 @@ public class ElasticsearchApp {
 					"vo.Playbyplay", /**/
 					ConfigUtils.getProperty("documents.index.playbyplay")); /**/
 
-//			QueryService.matchAllQuery(ClientService.getESClient(), ConfigUtils.getGamecastIndexName());
-//			QueryService.matchQuery(ClientService.getESClient(), ConfigUtils.getGamecastIndexName(), "roadTeamName", "Duke");
-//			QueryService.compoundQuery(ClientService.getESClient(), ConfigUtils.getGamecastIndexName(), "Duke");
-			// log.info("ENGLISH");
-			// QueryService.testMultilingualMultiMatch(ClientService.getESClient(), "home");
-			// log.info("GERMAN");
-			// QueryService.testMultilingualMultiMatch(ClientService.getESClient(),
-			// "Hause");
-
-			// IndicesService.deleteIndex(ClientService.getESClient(), "multicultural");
-			// IndicesService.deleteIndex(ClientService.getESClient(), "proto");
+//			QueryService.matchAllQuery(ClientService.getESClient(), ConfigUtils.getProperty("es.index.name.gamecast"));
+//			QueryService.matchQuery(ClientService.getESClient(), ConfigUtils.getProperty("es.index.name.gamestat"), "playerLastName", "Bueckers");
+//			QueryService.compoundQuery(ClientService.getESClient(), ConfigUtils.getProperty("es.index.name.player"), "Duke");
+			// public static void sqlQuery(ElasticsearchClient client, String indexName,
+			// String searchTerm) throws Exception {
 
 			ClientService.shutdownClient();
 

@@ -1,6 +1,9 @@
 package vo;
 
-public class Player {
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Player extends Base {
 	private String playerFirstName;
 	private String playerLastName;
 	private String playerName;
@@ -11,11 +14,12 @@ public class Player {
 	private Integer heightInches;
 	private String homeCity;
 	private String homeState;
-	private String sourceFile;
-	private Integer teamId;
-	private String id;
 	private String position;
 	private String classYear;
+
+	public Player() {
+		super();
+	}
 
 	public String getPlayerFirstName() {
 		return playerFirstName;
@@ -97,30 +101,6 @@ public class Player {
 		this.homeState = homeState;
 	}
 
-	public String getSourceFile() {
-		return sourceFile;
-	}
-
-	public void setSourceFile(String sourceFile) {
-		this.sourceFile = sourceFile;
-	}
-
-	public Integer getTeamId() {
-		return teamId;
-	}
-
-	public void setTeamId(Integer teamId) {
-		this.teamId = teamId;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
 	public String getPosition() {
 		return position;
 	}
@@ -136,4 +116,5 @@ public class Player {
 	public void setClassYear(String classYear) {
 		this.classYear = classYear;
 	}
+
 }

@@ -75,7 +75,7 @@ public class ConfigUtils {
 			return ConfigUtils.override();
 		}
 		if (run != null && run.trim().toUpperCase().compareTo("N") == 0) {
-			log.info(service + " will take no action because run flag is set to N");
+			// log.info(service + " will take no action because run flag is set to N");
 			return Boolean.FALSE;
 		}
 

@@ -43,6 +43,22 @@ public class QueryService {
 		}
 	}
 
+	/**
+	 * how to answer the question: which player scored the most points this season?
+	 * 
+	 * @param client
+	 * @param indexName
+	 * @param searchTerm
+	 * @throws Exception
+	 */
+	public static void aggregationQuery(ElasticsearchClient client, String indexName, String searchTerm) throws Exception {
+
+		try {
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+
 	public static void multiMatch(ElasticsearchClient client, String searchTerm) throws Exception {
 		// multi-match query will search across all specified fields
 		// Here, I use the "*" wildcard to indicate 'all fields'
@@ -90,7 +106,7 @@ public class QueryService {
 	public static <SearchSourceBuilder> void matchQuery(ElasticsearchClient client, String indexName, String searchField, String searchTerm) throws Exception {
 		try {
 			// sort is not working
-			SortOptions sortOptions = new SortOptions.Builder().field(f -> f.field("Gamecast.gameAttendance").order(SortOrder.Asc)).build();
+			SortOptions sortOptions = new SortOptions.Builder().field(f -> f.field("playerMinutes").order(SortOrder.Asc)).build();
 
 			FieldValue fieldValue = new FieldValue.Builder().stringValue(searchTerm).build();
 
@@ -106,7 +122,7 @@ public class QueryService {
 			SearchResponse<JsonData> searchResponse = client.search(searchRequest, JsonData.class);
 			for (Hit<JsonData> hit : searchResponse.hits().hits()) {
 				JsonObject document = hit.source().toJson().asJsonObject();
-				log.info("Attendance: " + document.get("gameAttendance") + " -> " + document.toString());
+				log.info("Player minutes: " + document.get("playerMinutes") + " -> " + document.toString());
 			}
 
 		} catch (Exception e) {
@@ -119,9 +135,17 @@ public class QueryService {
 			// interesting that if I omit the ".index(indexName)" the returned result set
 			// remains the same as when I include it
 
-			// for sort options: can't sort on a text field - have to use the keyword
-			// this is not working
-			SortOptions sortOptions = new SortOptions.Builder().field(f -> f.field("Gamecast.gameAttendance.keyword").missing("0").order(SortOrder.Asc)).build();
+			// for numeric sorting, this works:
+			// - map the field as a numeric type (e.g. integer) and also include the keyword
+			// field specification
+			// - strangely, including ".keyword" in the sort specification results in an
+			// error
+			// (i.e., cannot say field_name.keyword)
+			// - just use "field_name"
+
+			// SortOptions sortOptions = new SortOptions.Builder().field(f ->
+			// f.field("gameAttendance").missing("0").order(SortOrder.Asc)).build();
+			SortOptions sortOptions = new SortOptions.Builder().field(f -> f.field("venueCity.keyword").order(SortOrder.Asc)).build();
 
 			Query query = new Query.Builder().matchAll(QueryBuilders.matchAll().build()).build();
 			SearchRequest searchRequest = new SearchRequest.Builder()/**/
@@ -134,7 +158,7 @@ public class QueryService {
 			SearchResponse<JsonData> searchResponse = client.search(searchRequest, JsonData.class);
 			for (Hit<JsonData> hit : searchResponse.hits().hits()) {
 				JsonObject document = hit.source().toJson().asJsonObject();
-				log.info("Attendance: " + document.get("gameAttendance") + " -> " + document.toString());
+				log.info("venue city: " + document.get("venueCity") + " -> " + document.toString());
 			}
 
 		} catch (Exception e) {

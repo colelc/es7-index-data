@@ -18,7 +18,7 @@
               "format": "basic_date"
             },
             "gamePercentageFull": {
-              "type": "text",
+              "type": "integer",
               "fields": {
                 "keyword": {
                   "type": "keyword",
@@ -121,7 +121,13 @@
               }
             },
             "venueCapacity": {
-              "type": "integer"
+              "type": "integer",
+	           "fields": {
+	              "keyword": {
+	                "type": "keyword",
+	                "ignore_above": 256
+	              }
+	           }
             },
             "venueCity": {
               "type": "text",
@@ -152,9 +158,6 @@
             }
           }
         },
-        "gameAttendance": {
-          "type": "long"
-        },
         "gameDay": {
           "type": "text",
           "fields": {
@@ -168,7 +171,7 @@
           "type": "keyword"
         },
         "gamePercentageFull": {
-          "type": "text",
+          "type": "integer",
           "fields": {
             "keyword": {
               "type": "keyword",
@@ -186,7 +189,13 @@
           }
         },
         "homeTeamConferenceId": {
-          "type": "keyword"
+          "type": "integer",
+	           "fields": {
+	              "keyword": {
+	                "type": "keyword",
+	                "ignore_above": 256
+	              }
+	           }
         },
         "homeTeamConferenceLongName": {
           "type": "text",
@@ -207,7 +216,13 @@
           }
         },
         "homeTeamId": {
-          "type": "keyword"
+          "type": "integer",
+	           "fields": {
+	              "keyword": {
+	                "type": "keyword",
+	                "ignore_above": 256
+	              }
+	           }
         },
         "homeTeamName": {
           "type": "text",
@@ -249,7 +264,13 @@
           }
         },
         "roadTeamConferenceId": {
-          "type": "keyword"
+          "type": "integer",
+	           "fields": {
+	              "keyword": {
+	                "type": "keyword",
+	                "ignore_above": 256
+	              }
+	           }
         },
         "roadTeamConferenceLongName": {
           "type": "text",
@@ -270,7 +291,13 @@
           }
         },
         "roadTeamId": {
-          "type": "keyword"
+          "type": "integer",
+	           "fields": {
+	              "keyword": {
+	                "type": "keyword",
+	                "ignore_above": 256
+	              }
+	           }
         },
         "roadTeamName": {
           "type": "text",

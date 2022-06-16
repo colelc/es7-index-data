@@ -5,13 +5,7 @@
           "type": "text",
           "fields": {
             "gameId": {
-              "type": "text",
-	           "fields": {
-	              "keyword": {
-	                "type": "keyword",
-	                "ignore_above": 256
-	              }
-	           }
+              "type": "keyword"
             },
             "gameDay": {
               "type": "date",
@@ -45,7 +39,13 @@
               }
             },
             "homeTeamConferenceId": {
-              "type": "integer"
+              "type": "integer",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
             },
             "roadTeamConferenceLongName": {
               "type": "text",
@@ -93,10 +93,22 @@
               }
             },
             "roadTeamId": {
-              "type": "integer"
+              "type": "integer",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
             },
             "seconds": {
-              "type": "integer"
+              "type": "integer",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
             },
             "homeTeamConferenceLongName": {
               "type": "text",
@@ -108,7 +120,13 @@
               }
             },
             "roadTeamConferenceId": {
-              "type": "integer"
+              "type": "integer",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
             },
             "id": {
               "type": "text",
@@ -131,7 +149,13 @@
           }
         },
         "homeTeamId": {
-          "type": "integer"
+          "type": "integer",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
         },
         "playerId": {
           "type": "text",

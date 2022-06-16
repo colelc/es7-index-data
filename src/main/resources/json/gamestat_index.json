@@ -15,13 +15,7 @@
 	            },
 	          
 	            "gameId": {
-	              "type": "text",
-		           "fields": {
-		              "keyword": {
-		                "type": "keyword",
-		                "ignore_above": 256
-		              }
-		           }
+	              "type": "keyword"
 	            },
 	            "gameDay": {
 	              "type": "date",
@@ -64,7 +58,13 @@
 	              }
 	            },
 	            "homeTeamId": {
-	              "type": "integer"
+	              "type": "integer",
+	              "fields": {
+	                "keyword": {
+	                  "type": "keyword",
+	                  "ignore_above": 256
+	                }
+	              }
 	            },
 	            "homeTeamName": {
 	              "type": "text",
@@ -94,7 +94,13 @@
 	              }
 	            },
 	            "roadTeamId": {
-	              "type": "integer"
+	              "type": "integer",
+	              "fields": {
+	                "keyword": {
+	                  "type": "keyword",
+	                  "ignore_above": 256
+	                }
+	              }
 	            },
 	            "roadTeamName": {
 	              "type": "text",
@@ -106,7 +112,13 @@
 	              }
 	            },
 	            "roadTeamConferenceId": {
-	              "type": "integer"
+	              "type": "integer",
+	              "fields": {
+	                "keyword": {
+	                  "type": "keyword",
+	                  "ignore_above": 256
+	                }
+	              }
 	            },
 	            "playerMinutes": {
 	              "type": "integer",
@@ -118,49 +130,139 @@
 	              }
 	            },
 	            "playerFgAttempted" : {
-	            	"type": "integer"
+	            	"type": "integer",
+	              "fields": {
+	                "keyword": {
+	                  "type": "keyword",
+	                  "ignore_above": 256
+	                }
+	              }
 	            },
 	            "playerFgMade" : {
-	            	"type": "integer"
+	            	"type": "integer",
+	              "fields": {
+	                "keyword": {
+	                  "type": "keyword",
+	                  "ignore_above": 256
+	                }
+	              }
 	            },
 	            "playerFg3Attempted" : {
-	            	"type": "integer"
+	            	"type": "integer",
+	              "fields": {
+	                "keyword": {
+	                  "type": "keyword",
+	                  "ignore_above": 256
+	                }
+	              }
 	            },
 	            "playerFg3Made" : {
-	            	"type": "integer"
+	            	"type": "integer",
+	              "fields": {
+	                "keyword": {
+	                  "type": "keyword",
+	                  "ignore_above": 256
+	                }
+	              }
 	            },
 	            "playerFtAttempted" : {
-	            	"type": "integer"
+	            	"type": "integer",
+	              "fields": {
+	                "keyword": {
+	                  "type": "keyword",
+	                  "ignore_above": 256
+	                }
+	              }
 	            },
 	            "playerFtMade" : {
-	            	"type": "integer"
+	            	"type": "integer",
+	              "fields": {
+	                "keyword": {
+	                  "type": "keyword",
+	                  "ignore_above": 256
+	                }
+	              }
 	            },
 	            "playerOffensiveRebounds" : {
-	            	"type": "integer"
+	            	"type": "integer",
+	              "fields": {
+	                "keyword": {
+	                  "type": "keyword",
+	                  "ignore_above": 256
+	                }
+	              }
 	            },
 	            "playerDefensiveRebounds" : {
-	            	"type": "integer"
+	            	"type": "integer",
+	              "fields": {
+	                "keyword": {
+	                  "type": "keyword",
+	                  "ignore_above": 256
+	                }
+	              }
 	            },
 	            "playerTotalRebounds" : {
-	            	"type": "integer"
+	            	"type": "integer",
+	              "fields": {
+	                "keyword": {
+	                  "type": "keyword",
+	                  "ignore_above": 256
+	                }
+	              }
 	            },
 	            "playerAssists" : {
-	            	"type": "integer"
+	            	"type": "integer",
+	              "fields": {
+	                "keyword": {
+	                  "type": "keyword",
+	                  "ignore_above": 256
+	                }
+	              }
 	            },
 	            "playerSteals" : {
-	            	"type": "integer"
+	            	"type": "integer",
+	              "fields": {
+	                "keyword": {
+	                  "type": "keyword",
+	                  "ignore_above": 256
+	                }
+	              }
 	            },
 	            "playerBlocks" : {
-	            	"type": "integer"
+	            	"type": "integer",
+	              "fields": {
+	                "keyword": {
+	                  "type": "keyword",
+	                  "ignore_above": 256
+	                }
+	              }
 	            },
 	            "playerTurnovers" : {
-	            	"type": "integer"
+	            	"type": "integer",
+	              "fields": {
+	                "keyword": {
+	                  "type": "keyword",
+	                  "ignore_above": 256
+	                }
+	              }
 	            },
 	            "playerFouls" : {
-	            	"type": "integer"
+	            	"type": "integer",
+	              "fields": {
+	                "keyword": {
+	                  "type": "keyword",
+	                  "ignore_above": 256
+	                }
+	              }
 	            },
 	            "playerPointsScored" : {
-	            	"type": "integer"
+	            	"type": "integer",
+	              "fields": {
+	                "keyword": {
+	                  "type": "keyword",
+	                  "ignore_above": 256
+	                }
+	              }
 	            }
 	          }
 	        }
