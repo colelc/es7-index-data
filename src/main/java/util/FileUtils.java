@@ -1,6 +1,8 @@
 package util;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
@@ -32,6 +34,26 @@ public class FileUtils {
 		} catch (Exception e) {
 			throw e;
 		}
+	}
+
+	public static void combine() throws Exception {
+		try (PrintWriter out = new PrintWriter(new FileWriter(/**/
+				ConfigUtils.getProperty("directory.playbyplay.document") + File.separator + ConfigUtils.getProperty("playbyplay.document.json.file.name") + ".json"))) {
+
+			Set<String> files = FileUtils.getFileListFromDirectory(ConfigUtils.getProperty("directory.playbyplay.document"), ConfigUtils.getProperty("files.playbyplay.input"));
+
+			for (String file : files) {
+				List<String> documentList = FileUtils.readFileIntoList(ConfigUtils.getProperty("directory.playbyplay.document"), file);
+
+				for (String docString : documentList) {
+					out.write(docString + "\n");
+				}
+			}
+
+		} catch (Exception e) {
+			throw e;
+		}
+
 	}
 
 //	public static void main(String[] args) {

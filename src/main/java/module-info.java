@@ -14,6 +14,7 @@ module app {
 	requires org.apache.httpcomponents.httpcore.nio;
 	requires org.apache.httpcomponents.httpasyncclient;
 	requires commons.logging;
+	requires org.apache.commons.codec;
 	requires jakarta.json;
 	requires org.eclipse.parsson;
 	// requires javax.json.api;
@@ -22,6 +23,7 @@ module app {
 	requires com.fasterxml.jackson.core;
 	requires com.fasterxml.jackson.databind;
 	requires com.fasterxml.jackson.annotation;
+	requires com.fasterxml.jackson.datatype.jsr310;
 	requires lucene.analyzers.common;
 	requires commons.csv;
 	requires com.google.gson;

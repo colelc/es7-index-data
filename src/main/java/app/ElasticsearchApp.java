@@ -19,6 +19,13 @@ public class ElasticsearchApp {
 
 	public static void main(String[] args) {
 		log.info("This is an implementation of Elasticsearch 7.17.0 Indexing Capabilities");
+//		try {
+//			FileUtils.combine();
+//		} catch (Exception e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
+//		System.exit(0);
 
 		// what a great day it is today
 		try {

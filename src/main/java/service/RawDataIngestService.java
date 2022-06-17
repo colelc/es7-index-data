@@ -12,6 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 import java.util.Set;
 
 import org.apache.commons.csv.CSVFormat;
@@ -313,6 +314,12 @@ public class RawDataIngestService {
 			throw e;
 		}
 
+	}
+
+	protected static String getRandomNumberInRangeAsString(int min, int max) {
+		Random r = new Random();
+		int someInt = r.nextInt((max - min) + 1) + min;
+		return String.valueOf(someInt);
 	}
 
 }
