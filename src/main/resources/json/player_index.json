@@ -1,9 +1,6 @@
 {
     "mappings": {
       "properties": {
-        "Player": {
-          "type": "text",
-          "fields": {
             "playerFirstName": {
               "type": "text",
 	           "fields": {
@@ -143,4 +140,4 @@
             
             
             
-}}}}}
+}}}

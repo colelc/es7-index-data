@@ -81,8 +81,8 @@ public class IngestPlaybyplayService extends RawDataIngestService {
 							continue;
 						}
 
-						// String ix = playerId.substring(playerId.length() - 2);
-						String ix = getRandomNumberInRangeAsString(0, 14);
+						String ix = playerId.substring(playerId.length() - 2);
+						// String ix = getRandomNumberInRangeAsString(0, 14);
 
 						List<Map<String, String>> sublist = data.get(ix);
 						if (sublist == null) {

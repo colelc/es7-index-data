@@ -1,10 +1,7 @@
 {
     "mappings": {
       "properties": {
-        "Playbyplay": {
-          "type": "text",
-          "fields": {
-            "gameId": {
+             "gameId": {
               "type": "keyword"
             },
             "gameDay": {
@@ -135,8 +132,6 @@
                   "type": "keyword",
                   "ignore_above": 256
                 }
-              }
-            }
           }
         },
         "homeTeamName": {
@@ -174,7 +169,6 @@
               "ignore_above": 256
             }
           }
-        }
       }
-    }
+      }}
 }

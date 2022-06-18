@@ -1,5 +1,8 @@
 package vo;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Gamecast extends Base {
 	private String networkCoverage;// LHN,
 	private Integer venueCapacity;// 16540,

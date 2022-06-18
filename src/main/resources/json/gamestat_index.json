@@ -1,10 +1,7 @@
 {
     "mappings": {
       "properties": {
-        "Gamestat": {
-          "type": "text",
-          "fields": {
-	           "id": {
+ 	           "id": {
 	              "type": "text",
 		           "fields": {
 		              "keyword": {
@@ -264,8 +261,6 @@
 	                }
 	              }
 	            }
-	          }
-	        }
       }
     }
 }

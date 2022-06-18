@@ -49,8 +49,7 @@ public class CloudClientService {
 
 				builder.setHttpClientConfigCallback(b -> b.setDefaultCredentialsProvider(credentialsProvider));
 
-				// RestClient restClient = builder.build();
-				RestClient restClient = builder // RestClient.builder(new HttpHost(host, port))/**/
+				RestClient restClient = builder /**/
 						.setRequestConfigCallback(/**/
 								new RestClientBuilder.RequestConfigCallback() {
 									@Override
@@ -84,23 +83,4 @@ public class CloudClientService {
 		}
 	}
 
-//	private static RestHighLevelClient client = null;
-//
-//	public static RestHighLevelClient getESClient() throws Exception {
-//		if (client == null) {
-//			try {
-//				String host = ConfigUtils.getProperty("es.host");
-//				int port = ConfigUtils.getPropertyAsInt("es.port");
-//
-//				log.info("Acquiring Elasticsearch RestClient");
-//				client = new RestHighLevelClient(RestClient.builder(new HttpHost(host, port, "http")));
-//				log.info("Elasticsearch RestClient acquired: " + host + ":" + port);
-//			} catch (Exception e) {
-//				throw e;
-//			}
-//		}
-//		
-//
-//		return client;
-//	}
 }
