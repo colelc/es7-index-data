@@ -5,6 +5,7 @@ import org.apache.log4j.Logger;
 import elasticsesarch.service.BulkIndexerService;
 import elasticsesarch.service.CloudClientService;
 import elasticsesarch.service.IndicesService;
+import elasticsesarch.service.QueryService;
 import service.IngestGamecastService;
 import service.IngestGamestatService;
 import service.IngestPlaybyplayService;
@@ -88,9 +89,9 @@ public class ElasticCloudApp {
 					"vo.Playbyplay", /**/
 					ConfigUtils.getProperty("documents.index.playbyplay")); /**/
 
-//			QueryService.matchAllQuery(CloudClientService.getESClient(), ConfigUtils.getProperty("es.index.name.gamecast"));
-//			QueryService.matchQuery(CloudClientService.getESClient(), ConfigUtils.getProperty("es.index.name.gamestat"), "playerLastName", "Bueckers");
-//			QueryService.compoundQuery(CloudClientService.getESClient(), ConfigUtils.getProperty("es.index.name.player"), "Duke");
+			QueryService.matchAllQuery(CloudClientService.getESClient(), ConfigUtils.getProperty("es.index.name.gamecast"));
+			QueryService.matchQuery(CloudClientService.getESClient(), ConfigUtils.getProperty("es.index.name.gamestat"), "playerLastName", "Bueckers");
+			QueryService.compoundQuery(CloudClientService.getESClient(), ConfigUtils.getProperty("es.index.name.player"), "Duke");
 
 			CloudClientService.shutdownClient();
 

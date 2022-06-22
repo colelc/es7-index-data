@@ -32,7 +32,7 @@ public class CloudClientService {
 				final String cloudPassword = ConfigUtils.getProperty("es.cloud.password");
 				final String cloudHttps = ConfigUtils.getProperty("es.cloud.https");
 				// final String cloudPort = ConfigUtils.getProperty("es.cloud.port");
-				log.info("Establishing Elastic Cloud 7.17 connection");
+				log.info("Establishing Elastic Cloud connection");
 
 				// all of this extra stuff for objectMapper is not needed, per se,
 				// but included here
